@@ -44,6 +44,7 @@ typedef void 			none;
 typedef void 			*any;
 typedef char 			*str;
 typedef void 			fn_t;
+typedef unsigned long long entry_t;
 typedef void 			*handler_t;
 
 typedef unsigned long 	size_t;

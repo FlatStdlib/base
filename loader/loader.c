@@ -6,7 +6,7 @@
 *   @Reason: To debug on linux raw binaries used for making OS(s)
 */
 // Loader's Main Function Declaration
-void entry();
+int entry();
 
 /* Declare Function from build/lib.o */
 int str_len();
@@ -108,6 +108,6 @@ int get_args(char *argv[]) {
 }
 
 void _start() {
-    entry();
-    __syscall(60, 0, -1, -1, -1, -1, -1);
+    int code = entry();
+    __syscall(60, code, -1, -1, -1, -1, -1);
 }

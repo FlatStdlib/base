@@ -1,8 +1,11 @@
 .PHONY: all
 
-all: compile_asm_libs compile
+all: dir compile_asm_libs compile move cloader clean
 
 clean:
+	rm -rf *.o
+	
+reset:
 	rm -rf build
 
 dir:

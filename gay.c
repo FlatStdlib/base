@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <clibp.h>
 
-int main()
+entry_t entry()
 {
     print("Compiled clib+ with GCC");
     return 0;
