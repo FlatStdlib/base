@@ -20,7 +20,7 @@ static int _str_len(const char *buffer)
 }
 
 static int get_cmd_info(char *buffer) {
-    _syscall(2, (long)"/proc/self/cmdline", 0, 0);
+    __syscall(2, (long)"/proc/self/cmdline", 0, 0, -1, -1, -1);
     register long open asm("rax");
     if(open <= 0)
     {
@@ -29,13 +29,13 @@ static int get_cmd_info(char *buffer) {
     
     int fd = open;
     char BUFFER[255] = {0};
-    _syscall(0, fd, (long)BUFFER, 255);
+    __syscall(0, fd, (long)BUFFER, 255, -1, -1, -1);
     register long bts asm("rax");
 
     int bytes = bts;
     _mem_cpy(buffer, BUFFER, bytes);
 
-    _syscall(3, fd, 0, 0);
+    __syscall(3, fd, 0, 0, -1, -1, -1);
     return bytes;
 }
 
@@ -62,7 +62,7 @@ static int _find_char(const char *buffer, const char ch, int sz, int match) {
 }
 
 int get_pid() {
-    _syscall(39, 0, 0, 0);
+    __syscall(39, 0, 0, 0, -1, -1, -1);
     volatile register long sys asm("rax");
 
     return sys;

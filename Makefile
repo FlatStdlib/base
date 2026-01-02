@@ -1,6 +1,6 @@
 .PHONY: all
 
-all: dir compile_asm_libs compile move cloader move clean
+all: dir compile move cloader move clean
 
 #
 # Delete obj file
@@ -36,21 +36,11 @@ count:
 	headers/stdlib/*.h
 
 #
-# Compile x86 and x86_64 ASM libs to object file
-#
-compile_asm_libs:
-	nasm -f elf64 asm/x86.asm -o build/x86.o
-	nasm -f elf64 asm/x86_64.asm -o build/x86_64.o
-
-#
 # Compile the current arch core ASM lib for clib+ built-in
 # Merge clib+ built-in lib for the compiler and another for external use with other compilers
 #
 
 compile:
-	nasm -f elf64 asm/x86_64/lib.asm -o build/lib.o
-
-	rm -rf *.o
 	gcc -c src/*.c \
 	src/stdlib/*.c \
 	src/libs/*.c \
@@ -68,5 +58,5 @@ compile:
 cloader:
 	gcc -c linker/gcc_clibp.c -o gcc_clibp.o -nostdlib
 	gcc -c loader/loader.c -o loader/loader.o -nostdlib -ffunction-sections -Wl,--gc-sections
-	ld -o gcc_clibp gcc_clibp.o build/lib.o
+	ld -o gcc_clibp gcc_clibp.o build/clibp.o
 	rm gcc_clibp.o

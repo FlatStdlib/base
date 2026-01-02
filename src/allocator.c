@@ -21,7 +21,7 @@ void init_mem() {
 }
 
 void uninit_mem() {
-	_syscall(11, _HEAP_PAGE_SZ_, 0, 0);
+	__syscall(11, _HEAP_PAGE_SZ_, 0, 0, -1, -1, -1);
 }
 
 int __get_total_mem_used__(void) { return used_mem; }

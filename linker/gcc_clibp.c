@@ -1,7 +1,7 @@
 /*
     Compile and link with loader
 */
-void _syscall(long, long, long, long);
+void __syscall(long, long, long, long, long, long, long);
 
 static int _str_len(const char *buffer)
 {
@@ -50,14 +50,14 @@ static void _mem_cpy(char *dest, const char *buffer, int len)
 }
 
 int get_pid() {
-    _syscall(39, 0, 0, 0);
+    __syscall(39, 0, 0, 0, -1, -1, -1);
     volatile register long sys asm("rax");
 
     return sys;
 }
 
 int get_cmd_info(char *buffer) {
-    _syscall(2, (long)"/proc/self/cmdline", 0, 0);
+    __syscall(2, (long)"/proc/self/cmdline", 0, 0, -1, -1, -1);
     register long open asm("rax");
     if(open <= 0)
     {
@@ -66,13 +66,13 @@ int get_cmd_info(char *buffer) {
 
     int fd = open;
     char BUFFER[255] = {0};
-    _syscall(0, fd, (long)BUFFER, 255);
+    __syscall(0, fd, (long)BUFFER, 255, -1, -1, -1);
     register long bts asm("rax");
 
     int bytes = bts;
     _mem_cpy(buffer, BUFFER, bytes);
 
-    _syscall(3, fd, 0, 0);
+    __syscall(3, fd, 0, 0, -1, -1, -1);
     return bytes;
 }
 
@@ -100,7 +100,7 @@ static int _find_char(const char *buffer, const char ch, int sz, int match) {
 
 void print(const char *buff)
 {
-	_syscall(1, 1, (unsigned long)buff, _str_len(buff));
+	__syscall(1, 1, (unsigned long)buff, _str_len(buff), -1, -1, -1);
 }
 
 void execute(char *app, char **args)
@@ -109,17 +109,17 @@ void execute(char *app, char **args)
 		return;
 
 	int pid;
-	_syscall(57, 0, 0, 0);
+	__syscall(57, 0, 0, 0, -1, -1, -1);
 	register long r asm("rax");
 	pid = r;
 
 	if(pid == 0)
 	{
-		_syscall(59, (long)app, (long)args, 0);
+		__syscall(59, (long)app, (long)args, 0, -1, -1, -1);
 	} else if(pid > 0) {
-		_syscall(61, pid, 0, 0);
+		__syscall(61, pid, 0, 0, -1, -1, -1);
 	} else {
-		_syscall(1, 1, (long)"fork error\n", 7);
+		__syscall(1, 1, (long)"fork error\n", 7, -1, -1, -1);
 	}
 }
 
@@ -159,21 +159,20 @@ void _start() {
         execute(n[0], n);
 
         if(OPT[1] == 'c') {
-        	_syscall(60, 0, 0, 0);
+        	__syscall(60, 0, 0, 0, -1, -1, -1);
         	execute(rm[0], rm);
         }
     }
 
 	char *OUTPUT = __ARGV__[3];
 	print("[ + ] Linking to "), print(OUTPUT), print("....!\n");
-    char *n[9] = {
+    char *n[8] = {
         "/usr/bin/ld",
 		"--no-relax",
         "-o",
         OUTPUT,
 		COPY,
         "build/clibp.o",
-		"build/lib.o",
         "loader/loader.o",
         0
     };
@@ -188,5 +187,5 @@ void _start() {
 		execute(strip[0], strip);
 	}
 
-    _syscall(60, 0, 0, 0);
+    __syscall(60, 0, 0, 0, -1, -1, -1);
 }

@@ -2,7 +2,8 @@
 
 fd_t open_file(const char *filename, FILE_MODE mode)
 {
-    int fd = _sys_open(filename, mode, 0);
+    __syscall(_SYS_OPEN, (long)filename, (long)mode, 0, -1, -1, -1);
+	register long fd asm("rax");
     if(fd == -2)
 		print("[ - ] Error, No file or directory\n");
 
@@ -14,25 +15,29 @@ fd_t open_file(const char *filename, FILE_MODE mode)
 
 int file_content_size(fd_t fd)
 {
-	_syscall(_SYS_LSEEK, fd, 0, 2);
+	__syscall(_SYS_LSEEK, fd, 0, 2, -1, -1, -1);
 	register long sz asm("rax");
 	int size = sz;
 
-	_syscall(_SYS_LSEEK, fd, 0, 0);
+	__syscall(_SYS_LSEEK, fd, 0, 0, -1, -1, -1);
 	return size;
 }
 
 int file_read(fd_t fd, char *buffer, int sz)
 {
-    return _sys_read(fd, buffer, sz);
+    __syscall(_SYS_READ, fd, (long)buffer, sz, -1, -1, -1);
+	register long bytes asm("rax");
+	return bytes;
 }
 
 int file_write(fd_t fd, const char *buffer, len_t len)
 {
-    return _sys_write(fd, buffer, len);
+    __syscall(_SYS_WRITE, fd, (long)buffer, len, -1, -1, -1);
+	register long chk asm("rax");
+	return chk;
 }
 
 void file_close(fd_t fd)
 {
-    _sys_close(fd);
+    __syscall(fd, -1, -1, -1, -1, -1, -1);
 }

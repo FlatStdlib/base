@@ -4,7 +4,7 @@
 
 none __exit(int code)
 {
-	_syscall(60, code, 0, 0);
+	__syscall(60, code, 0, 0, -1, -1, -1);
 }
 
 none err_n_exit(const str buff, int code)
@@ -12,13 +12,16 @@ none err_n_exit(const str buff, int code)
 	if(buff)
 		print(buff);
 
-	_syscall(60, code, 0, 0);
+	__syscall(60, code, 0, 0, -1, -1, -1);
 }
 
 int get_input(str dest, len_t count) {
 	char BUFFER[count];
-	int b = _sys_read(0, BUFFER, count);
+	__syscall(_SYS_READ, 0, (long)BUFFER, count, -1, -1, -1);
+	register long bytes_read asm("rax");
 	mem_cpy(dest, BUFFER, count);
+
+	return bytes_read;
 }
 
 none printnum(int num)
@@ -63,11 +66,12 @@ none _printi(int num)
 
 none print(const str buff)
 {
-	_syscall(1, 1, (unsigned long)buff, str_len(buff));
+	__syscall(1, 1, (unsigned long)buff, str_len(buff), -1, -1, -1);
 }
 
 none println(const str buff)
 {
-	_syscall(1, 1, (unsigned long)buff, str_len(buff));
-	_syscall(1, 1, (unsigned long)"\n", 2);
+	__syscall(1, 1, (unsigned long)buff, str_len(buff), -1, -1, -1);
+	__syscall(1, 1, (unsigned long)"\n", 2, -1, -1, -1);
 }
+
