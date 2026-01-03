@@ -15,6 +15,7 @@
 	``Optional flags: --strip --nolink``
 - Multiple files
 - C flags
+- Linker flags
 
 ### What does it do?
 
