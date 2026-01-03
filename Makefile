@@ -44,7 +44,7 @@ compile:
 	gcc -c src/*.c \
 	src/stdlib/*.c \
 	src/libs/*.c \
-	-nostdlib
+	-nostdlib -nostdinc
 	ar rcs build/libclibp.a *.o
 	ar rcs build/clibp.o *.o
 	rm -rf *.o
@@ -60,3 +60,7 @@ cloader:
 	gcc -c loader/loader.c -o loader/loader.o -nostdlib #-ffunction-sections -Wl,--gc-sections
 	ld -o gcc_clibp gcc_clibp.o build/clibp.o
 	rm gcc_clibp.o
+
+test_run:
+	sudo make && ./gcc_clibp gay.c -o t && ./t
+	c99 gay.c -o t -lclibp && ./t

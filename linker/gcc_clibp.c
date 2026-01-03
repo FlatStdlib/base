@@ -134,22 +134,6 @@ void get_cmdline_args()
 
 void _start() {
 	get_cmdline_args();
-//    int __ARGC__ = 0;
-//    char *__ARGV__[100] = {0};
-//
-//    char BUFFER[1024] = {0};
-//    int count = get_cmd_info(BUFFER);
-//
-//    char *ptr = BUFFER;
-//    int test = _count_char(BUFFER, '\0', count);
-//
-//    for(int i = 0, match = 0, last = 0; i < test; i++) {
-//        int pos = _find_char(ptr, '\0', count, match++);
-//        if(pos == -1)
-//            break;
-//
-//        __ARGV__[__ARGC__++] = (char *)(ptr + (pos + 1));
-//    }
 
     char *SRC_CODE_FILE = __ARGV__[1];
     int src_len = _str_len(SRC_CODE_FILE);
@@ -165,8 +149,15 @@ void _start() {
 
 		print(COPY), print("....!\n");
 
-        char *n[8] = {"/usr/bin/gcc", "-ffreestanding", "-c", SRC_CODE_FILE, "-o", COPY, "-nostdlib", 0};
-        execute(n[0], n);
+        if(arr_contains(__ARGV__, __ARGC__, "--tcc") > -1) {
+            print("Compiling with TCC....\n");
+            char *n[9] = {"/usr/bin/tcc", "-ffreestanding", "-std=c99", "-c", SRC_CODE_FILE, "-o", COPY, "-nostdlib", 0};
+            execute(n[0], n);
+            execute("/usr/bin/execstack", (char *[]){"/usr/bin/execstack", "-c", COPY, 0});
+        } else {
+            char *n[8] = {"/usr/bin/gcc", "-ffreestanding", "-c", SRC_CODE_FILE, "-o", COPY, "-nostdlib", 0};
+            execute(n[0], n);
+        }
 
         if(OPT[1] == 'c') {
         	__syscall(60, 0, 0, 0, -1, -1, -1);
