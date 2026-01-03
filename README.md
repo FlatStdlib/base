@@ -43,7 +43,7 @@ make # make tcc (for tcc (not complete, testing stage))
 # Standard Lib Use
 
 ```c
-#define CLIBP
+#define __CLIBP__
 <headers/init.h>
 
 void entry() {
