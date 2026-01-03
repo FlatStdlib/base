@@ -8,6 +8,11 @@
 - The project is still in development!
 - The library is a Architecture-targeted freestanding C compiler backend
 
+# Things clib+ doesn't support yet
+
+- Multiple files
+- C flags
+
 ### What does it do?
 
 - Targets the architecture for built-in tooling (ASM libs)
