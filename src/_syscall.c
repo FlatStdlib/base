@@ -1,20 +1,6 @@
 #include "../headers/clibp.h"
 
 #if defined(___x86___)
-	long _syscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)
-	{
-	    long ret;
-	    asm volatile (
-	        "int $0x80"
-	        : "=a"(ret)
-	        : "a"(n),
-	          "b"(a1), "c"(a2), "d"(a3),
-	          "S"(a4), "D"(a5)
-	        : "memory"
-	    );
-	    return ret;
-	}
-
     void __syscall(long syscall, long arg1, long arg2, long arg3, long arg4, long arg5, long arg6)
     {
         register long sys asm("eax") = syscall;
@@ -62,26 +48,6 @@
         asm("int $0x80");
     }
 #else
-	long _syscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)
-	{
-	    long ret;
-	    asm volatile (
-	        "mov %5, %%r10 \n"
-	        "syscall"
-	        : "=a"(ret)
-	        : "a"(n),
-	          "D"(a1),
-	          "S"(a2),
-	          "d"(a3),
-	          "r"(a4),
-	          "r"(a5),
-	          "r"(a6)
-	        : "rcx", "r11", "r10", "memory"
-	    );
-
-	    return ret;
-	}
-
     void __syscall(long syscall, long arg1, long arg2, long arg3, long arg4, long arg5, long arg6)
     {
         register long sys asm("rax") = syscall;
@@ -146,7 +112,7 @@
         ret = check;
         if(check < 0)
             _printi(ret);
-            
+
         return ret;
     }
 #endif

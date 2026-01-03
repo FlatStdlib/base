@@ -40,7 +40,7 @@
 typedef unsigned long int       uintptr_t; // Temporary
 
 /* Some Built-in Types */
-#if !defined(__TINYC__)
+#if defined(__TINYC__)
 	#define NULL 			0
 #endif
 #define bool 			int

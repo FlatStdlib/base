@@ -1,7 +1,32 @@
 .PHONY: all
 
-all: dir compile move cloader move clean
+all: dir compile cloader move clean
+tcc: tcc_compile 
 
+tcc_compile:
+	mkdir -p build
+
+	tcc -ffreestanding -std=c99 -c src/*.c \
+	src/stdlib/*.c \
+	src/libs/*.c \
+	-nostdlib -nostdinc 
+# 	execstack -c *.o
+	ar rcs build/libclibp.a *.o
+	ar rcs build/clibp.o *.o
+	rm -rf *.o
+
+	tcc -ffreestanding -std=c99 -c linker/gcc_clibp.c -o gcc_clibp.o -ffunction-sections -Wl
+	tcc -ffreestanding -std=c99 -c loader/loader.c -o loader/loader.o -ffunction-sections -Wl
+	execstack -c gcc_clibp.o
+	execstack -c loader/loader.o
+
+	ld -o gcc_clibp gcc_clibp.o build/clibp.o
+	rm gcc_clibp.o
+	
+	cp -r headers/* /usr/local/include
+	cp build/libclibp.a /usr/lib
+
+	rm -rf *.o
 #
 # Delete obj file
 #
@@ -57,7 +82,7 @@ compile:
 #
 cloader:
 	gcc -c linker/gcc_clibp.c -o gcc_clibp.o -nostdlib
-	gcc -c loader/loader.c -o loader/loader.o -nostdlib #-ffunction-sections -Wl,--gc-sections
+	gcc -c loader/loader.c -o loader/loader.o -nostdlib -ffunction-sections -Wl,--gc-sections
 	ld -o gcc_clibp gcc_clibp.o build/clibp.o
 	rm gcc_clibp.o
 

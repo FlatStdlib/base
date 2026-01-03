@@ -48,7 +48,7 @@ static int get_cmd_info(char *buffer) {
     }
     
     int fd = open;
-    char BUFFER[255] = {0};
+    char BUFFER[255];
     __syscall(0, fd, (long)BUFFER, 255, -1, -1, -1);
     register long bts asm("rax");
 
@@ -83,7 +83,7 @@ static int _find_char(const char *buffer, const char ch, int sz, int match) {
 
 int get_args(char *argv[]) {
     int args = 0;
-    char BUFFER[1024] = {0};
+    char BUFFER[1024];
     int count = get_cmd_info(BUFFER);
 
     char *ptr = BUFFER;
