@@ -10,6 +10,7 @@
   - clib+   entry()
 */
 #include <stdio.h>
+#include <stdint.h>
 
 #define __CLIBP__
 #include <clibp.h>

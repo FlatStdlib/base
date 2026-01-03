@@ -10,6 +10,9 @@ typedef struct {
 } sleep_t;
 
 #if defined(___x86___)
+	#define SYSCALL_REGISTER_x86 "eax"
+	#define EXECUTE_SYSCALL_x86 "int $0x80"
+
 	#define _SYS_EXIT 					1
 	#define _SYS_FORK					2
 	#define _SYS_READ					3
@@ -451,6 +454,8 @@ typedef struct {
 	#define _SYS_FUTEX_WAITV     		449
 	#define _SET_MEMPOLICY_HOME_NOD		-1
 #elif defined(__x86_64__)
+	#define SYSCALL_REGISTER_x86_64 "rax"
+	#define EXECUTE_SYSCALL_x86_64 "syscall"
 	/* x86_64 registers */
 
 	/* x86_64 syscalls */

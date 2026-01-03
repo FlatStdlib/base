@@ -11,7 +11,6 @@
 	#define printf print
 	#define nullptr_t ((void *)0)
 	#define emptyptr_t ((void *)-1)
-	
 #endif
 
 /*
@@ -20,24 +19,22 @@
     Disable by using DISABLE_AUTO_ARCH_DET
     followed by a specific architecture for compilation
 */
-#if defined(DISABLE_AUTO_ARCH_DET)
-    #if defined(CLIBP_x86)
-            #define ___x86___
-			#include "asm.h"
-    #endif
-    #if defined(CLIBP_x86_64)
-            #define ___x86_64___
-			#include "asm.h"
-    #endif
-#else
-	#define ___x86_64___
-	#include "asm.h"
+#if defined(__x86__)
+		#define ___x86___
+        #define SYSCALL_REGISTER SYSCALL_REGISTER_x86
+        #define EXECUTE_SYSCALL EXECUTE_SYSCALL_x86
+#elif defined(__x86_64__)
+		#define ___X86_64___
+        #define SYSCALL_REGISTER SYSCALL_REGISTER_x86
+        #define EXECUTE_SYSCALL EXECUTE_SYSCALL_x86_64
 #endif
-
+#include "asm.h"
 
 #include "allocator.h"
 
-typedef unsigned long int       uintptr_t; // Temporary
+#if !defined(__GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION)
+	typedef unsigned long int       uintptr_t; // Temporary
+#endif
 
 /* Some Built-in Types */
 #if defined(__TINYC__)

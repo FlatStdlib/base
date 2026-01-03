@@ -1,5 +1,11 @@
 #include "../headers/clibp.h"
 
+long __syscall__(long arg1, long arg2, long arg3, long arg4, long arg5, long arg6, long sys)
+{
+	register long ss asm(SYSCALL_REGISTER) = sys;
+    asm(EXECUTE_SYSCALL);
+}
+
 #if defined(___x86___)
     void __syscall(long syscall, long arg1, long arg2, long arg3, long arg4, long arg5, long arg6)
     {
