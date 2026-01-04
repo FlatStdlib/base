@@ -2,13 +2,6 @@
 #include <stddef.h>
 #include <stdio.h>
 
-#define SYSCALL_REGISTER_x86 "eax"
-#define EXECUTE_SYSCALL_x86 "int $0x80"
-
-#define SYSCALL_REGISTER_x86_64 "rax"
-#define EXECUTE_SYSCALL_x86_64 "syscall"
-
-
 #if defined(__x86__)
         #define SYSCALL_REGISTER SYSCALL_REGISTER_x86
         #define EXECUTE_SYSCALL EXECUTE_SYSCALL_x86
