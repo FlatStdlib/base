@@ -20,58 +20,48 @@
     followed by a specific architecture for compilation
 */
 #include "asm.h"
-#if defined(__x86__)
-		#define ___x86___
-        #define SYSCALL_REGISTER SYSCALL_REGISTER_x86
-        #define EXECUTE_SYSCALL EXECUTE_SYSCALL_x86
-#elif defined(__x86_64__)
-		#define ___X86_64___
-        #define SYSCALL_REGISTER SYSCALL_REGISTER_x86_64
-        #define EXECUTE_SYSCALL EXECUTE_SYSCALL_x86_64
-#endif
-
 #include "allocator.h"
 
 #if !defined(__GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION)
 	typedef unsigned long int       uintptr_t; // Temporary
 #endif
 
-/* Some Built-in Types */
-#if defined(__TINYC__)
+/* Some Built-in Types ( -nostdlib -nostdinc )*/
+#if defined(__TINYC__) && !defined(_STDIO_H)
 	#define NULL 			0
-#elif defined(__GNUC__)
+#elif defined(__GNUC__) && !defined(_STDIO_H)
 	#define NULL 			0
 #endif
-#define bool 			int
-#define true 			1
-#define false 			0
 
-typedef char 			i8;
-typedef short 			i16;
-typedef int 			i32;
+#define bool 				int
+#define true 				1
+#define false 				0
 
-typedef unsigned char 	u8;
-typedef unsigned short 	u16;
-typedef unsigned int	u32;
+typedef signed char			i8;
+typedef signed short int	i16;
+typedef signed int 			i32;
+typedef signed long long 	i64;
 
-typedef void 			none;
-typedef void 			*any;
-typedef char 			*str;
-typedef void 			fn_t;
-typedef unsigned long long entry_t;
-typedef void 			*handler_t;
+typedef unsigned char 		u8;
+typedef unsigned short 		u16;
+typedef unsigned int		u32;
+typedef unsigned long long 	u64;
 
-typedef unsigned long 	size_t;
-typedef unsigned long 	len_t;
-typedef unsigned long 	pos_t;
+typedef void 				none;
+typedef void 				*any;
+typedef char 				*str;
+typedef void 				fn_t;
+typedef unsigned long long 	entry_t;
+typedef void 				*handler_t;
 
-/* Heap Declaration */
-typedef void 			*heap_t;
-extern heap_t 			_HEAP_;
+typedef unsigned long 		size_t;
+typedef unsigned long 		len_t;
+typedef unsigned long 		pos_t;
 
 /* Global Function Declaraction */
 long _syscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);
 void __syscall(long syscall, long arg1, long arg2, long arg3, long arg4, long arg5, long arg6);
+long __syscall__(long arg1, long arg2, long arg3, long arg4, long arg5, long arg6, long sys);
 
 // Get Start-up App Cmdline Arguments
 int 	get_args(char *argv[]);

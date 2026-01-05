@@ -9,10 +9,23 @@ typedef struct {
     int sec, nsec;
 } sleep_t;
 
-#if defined(___x86___)
-	#define SYSCALL_REGISTER_x86 "eax"
-	#define EXECUTE_SYSCALL_x86 "int $0x80"
+#if defined(__x86__) || defined(__i386__)
+	#define MAX_REGISTER 6
+	#define SYSCALL_REG "eax"
+	#define EXECUTE_SYSCALL "int $0x80"
+	
+    // C-ABIV Calling Conventions
+    #define __EAX__ "eax"
+    #define __EBX__ "ebx"
+    #define __ECX__ "ecx"
+    #define __EDX__ "edx"
+    #define __ESI__ "esi"
+    #define __EDI__ "edi"
 
+    #define __EBP__ "ebp"
+    #define __ESP__ "esp"
+
+	/* x86 syscall */
 	#define _SYS_EXIT 					1
 	#define _SYS_FORK					2
 	#define _SYS_READ					3
@@ -454,9 +467,27 @@ typedef struct {
 	#define _SYS_FUTEX_WAITV     		449
 	#define _SET_MEMPOLICY_HOME_NOD		-1
 #elif defined(__x86_64__)
-	#define SYSCALL_REGISTER_x86_64 "rax"
-	#define EXECUTE_SYSCALL_x86_64 "syscall"
-	/* x86_64 registers */
+	#define MAX_REGISTER 6
+	#define SYSCALL_REG "rax"
+	#define EXECUTE_SYSCALL "syscall"
+
+	/* x86_64 C-ABIV Calling Convension */
+    #define __RAX__ "rax"
+    #define __RDI__ "rdi"
+    #define __RSI__ "rsi"
+    #define __RDX__ "rdx"
+    #define __R10__ "r10"
+    #define __R8__ "r8"
+    #define __R9__ "r9"
+    #define __RBX__ "rbx"
+    #define __RCX__ "rcx"
+    #define __RBP__ "rbp"
+    #define __R15__ "r15"
+    #define __R14__ "r14"
+    #define __R13__ "r13"
+    #define __R12__ "r12"
+    #define __R11__ "r11"
+    #define __RSP__ "rsp"
 
 	/* x86_64 syscalls */
     #define _SYS_READ                   0
@@ -798,39 +829,26 @@ typedef struct {
 
 	/* x86_64 syscall wrappers */
 	long __sys_mmap(long arg1, long arg2, long arg3, long arg4, long arg5, long arg6);
+
+#elif defined(__riscv)
+	#define MAX_REGISTER 8
+	#define SYSCALL_REG "a7"
+	#define EXECUTE_SYSCALL "ecall"
+#elif defined(__aarch64__)
+	#define MAX_REGISTER 8
+	#define SYSCALL_REG "x8"
+	#define EXECUTE_SYSCALL "svc #0"
+#elif defined(__arm__)
+	#define MAX_REGISTER 4
+	#define SYSCALL_REG "r7"
+	#define EXECUTE_SYSCALL "svc #0"
+#elif defined(_WIN64)
+	#define MAX_REGISTER 4
+	#define SYSCALL_REG "rcx"
+	#define EXECUTE_SYSCALL "syscall"
+#else
+	#define MAX_REGISTER 0
+	#define SYSCALL_REG 0
+	#define EXECUTE_SYSCALL 0
 #endif
 
-#if defined(___x86___)
-    // C Calling Conventions
-    #define __EAX__ "eax"
-    #define __EBX__ "ebx"
-    #define __ECX__ "ecx"
-    #define __EDX__ "edx"
-    #define __ESI__ "esi"
-    #define __EDI__ "edi"
-
-    #define __EBP__ "ebp"
-    #define __ESP__ "esp"
-#elif defined(___x86_64___)
-    // C Calling Conventions
-    #define __RAX__ "rax"
-    #define __RDI__ "rdi"
-    #define __RSI__ "rsi"
-    #define __RDX__ "rdx"
-    #define __R10__ "r10"
-    #define __R8__ "r8"
-    #define __R9__ "r9"
-
-    // Spare Registers
-    #define __RBX__ "rbx"
-    #define __RCX__ "rcx"
-    #define __RBP__ "rbp"
-    #define __R15__ "r15"
-    #define __R14__ "r14"
-    #define __R13__ "r13"
-    #define __R12__ "r12"
-    #define __R11__ "r11"
-
-    // Stack pointer
-    #define __RSP__ "rsp"
-#endif

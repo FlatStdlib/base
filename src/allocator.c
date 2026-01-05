@@ -1,5 +1,6 @@
 #include "../headers/clibp.h"
 
+int _HEAP_PAGE_         = 0;
 int _HEAP_PAGE_SZ_ 		= 4096;
 heap_t _HEAP_ 			= NULL;
 int used_mem 			= 0;
@@ -11,11 +12,22 @@ int __is_heap_init__() { return (_HEAP_ ? 1 : 0); }
 
 void set_heap_sz(int n)
 {
-	_HEAP_PAGE_SZ_ = n;
+	_HEAP_PAGE_ = n;
+}
+
+void req_memory()
+{
+    if(__syscall__((long)_HEAP_, _HEAP_PAGE_ + _HEAP_PAGE_SZ_, 0x1 | 0x2, 0, 0, 0, _SYS_MPROTECT) != 0)
+    {
+        println("Segfault");
+        return;
+    }
+    
+    _HEAP_PAGE_ += _HEAP_PAGE_SZ_;
 }
 
 void init_mem() {
-    long ret = __sys_mmap(0, _HEAP_PAGE_SZ_, 0x1|0x2, 0x2|0x20, -1, 0);
+    long ret = __sys_mmap(0, _HEAP_PAGE_, 0x1|0x2, 0x2|0x20, -1, 0);
     if (ret < 0) {
         println("[ - ] Error, mmap failed!");
         return;
@@ -24,7 +36,7 @@ void init_mem() {
 	_HEAP_ = (void *)ret;
 
     // Clear the heap to mark all memory as free
-    mem_set(_HEAP_, 1, _HEAP_PAGE_SZ_);
+    mem_set(_HEAP_, 1, _HEAP_PAGE_);
 
     if (HEAP_DEBUG)
         print("[ + ] Heap initialized!\n");
@@ -32,7 +44,7 @@ void init_mem() {
 
 static int find_space(int space)
 {
-    for (int i = 0; i <= _HEAP_PAGE_SZ_ - space; i++) {
+    for (int i = 0; i <= _HEAP_PAGE_ - space; i++) {
         int free = 1;
         for (int j = 0; j < space; j++) {
             if (((char *)_HEAP_)[i + j] != 1) {
@@ -49,7 +61,7 @@ static int find_space(int space)
 any allocate(int sz, int len) {
     if (!len) return NULL;
 
-    int space_left = _HEAP_PAGE_SZ_ - used_mem;
+    int space_left = _HEAP_PAGE_ - used_mem;
     int mem_needed = (sz ? sz * len : len) + HEAP_META_SZ;
 
     if (space_left < mem_needed)
@@ -93,6 +105,6 @@ void pfree(any ptr)
     int payload = m->size ? m->size * m->length : m->length;
     int total   = payload + HEAP_META_SZ;
 
-    mem_set(m, 0, total);
+    mem_set(m, 1, total);
     used_mem -= total;
 }

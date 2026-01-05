@@ -3,6 +3,7 @@
 */
 void __syscall(long, long, long, long, long, long, long);
 void print(const char *buff);
+int str_len(const char *buffer);
 
 static int _str_len(const char *buffer)
 {
@@ -35,7 +36,7 @@ int arr_contains(char **args, int argc, char *needle)
 		if(!args[i])
 			break;
 
-        if(_mem_cmp(args[i], needle, _str_len(args[i])))
+        if(_mem_cmp(args[i], needle, str_len(args[i])))
             return i;
 	}
 
@@ -132,8 +133,36 @@ void get_cmdline_args()
     }
 }
 
+/* GCC with default flags */
+const int GCC_DEFAULT_FLAG_COUNT = 4;
+char *GCC_DEFAULT_FLAGS[] = {
+    "/usr/bin/gcc",
+    "-nostdlib",
+    // "-nostdinc",
+    "-ffreestanding",
+    "-c",
+    0
+};
+
+char *GCC_COMPILE_CMD[150];
+int GCC_ARGS = 0;
+void create_gcc_compile_cmd()
+{
+    for(int i = 0; i < GCC_DEFAULT_FLAG_COUNT; i++, GCC_ARGS++)
+    {
+        GCC_COMPILE_CMD[GCC_ARGS] = GCC_DEFAULT_FLAGS[GCC_ARGS];
+    }
+}
+
+char *LINKER_COMPILE_CMD[150];
+int LINKER_ARGS = 0;
+void create_linker_compile_cmd()
+{
+    
+}
+
 void _start() {
-	get_cmdline_args();
+    get_cmdline_args();
 
     char *SRC_CODE_FILE = __ARGV__[1];
     int src_len = _str_len(SRC_CODE_FILE);

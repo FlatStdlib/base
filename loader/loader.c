@@ -101,6 +101,10 @@ int get_args(char *argv[]) {
 }
 
 void _start() {
-    int code = entry();
+    int __ARGC__;
+    char *__ARGV__[80];
+    __ARGC__ = get_args(__ARGV__);
+
+    int code = entry(__ARGC__, __ARGV__);
     __syscall(60, code, -1, -1, -1, -1, -1);
 }

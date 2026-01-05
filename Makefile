@@ -24,7 +24,7 @@ tcc_compile:
 	tcc -ffreestanding -std=c99 -c src/*.c \
 	src/stdlib/*.c \
 	src/libs/*.c \
-	-nostdlib -nostdinc
+	-nostdlib
 # 	execstack -c *.o
 
 	ar rcs build/libclibp.a *.o
