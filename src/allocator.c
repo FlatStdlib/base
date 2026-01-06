@@ -15,6 +15,11 @@ fn set_heap_sz(int n)
 	_HEAP_PAGE_ = n;
 }
 
+void set_heap_debug()
+{
+	HEAP_DEBUG = 1;
+}
+
 fn req_memory()
 {
 	if(!_HEAP_PAGE_) _HEAP_PAGE_ = _HEAP_PAGE_SZ_;

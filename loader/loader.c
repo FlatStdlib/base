@@ -16,6 +16,9 @@ void mem_set();
 void init_mem();
 void uninit_mem();
 
+void set_heap_sz(int n);
+void set_heap_debug();
+
 /* Declare Function from build/syscall.o */
 void __syscall(long syscall, long arg1, long arg2, long arg3, long arg4, long arg5, long arg6);
 
@@ -101,11 +104,13 @@ static int ___get_args(char *argv[]) {
 }
 
 void _start() {
-    int __ARGC__;
     char *__ARGV__[80];
-    __ARGC__ = ___get_args(__ARGV__);
+    inti __ARGC__ = ___get_args(__ARGV__);
 
+	set_heap_debug();
+	set_heap_sz(4096 * 3);
+	init_mem();
     int code = entry(__ARGC__, __ARGV__);
-//	init_mem();
+    uninit_mem();
     __syscall(60, code, -1, -1, -1, -1, -1);
 }
