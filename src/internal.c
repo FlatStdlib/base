@@ -45,12 +45,6 @@ none print_sz(const str buffer, int sz)
 	__syscall(_SYS_WRITE, 1, (long)buffer, sz, 0, 0, 0);
 }
 
-none printnum(int num)
-{
-	char BUFF[100] = {0};
-	int temp = num;
-}
-
 none printc(const char ch)
 {
 	char BUFF[2] = {0};

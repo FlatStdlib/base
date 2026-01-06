@@ -4,7 +4,7 @@
 #define _PRESTRING_ "Testing"
 
 int entry() {
-    int HEAP_DEBUG = 1;
+    HEAP_DEBUG = 1;
     set_heap_sz(_LARGE_MEM_SZ_);
     init_mem();
 

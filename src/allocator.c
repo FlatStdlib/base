@@ -66,15 +66,13 @@ any allocate(int sz, int len) {
     if (space_left < mem_needed)
         return NULL;
 
-	println("HERE\n");
     int spot = find_space(mem_needed);
     if (spot == -1) {
         print("[ - ] Unable to find space!\n");
         return NULL;
     }
-	println("HERE\n");
-    any ptr = (char *)_HEAP_ + spot;
 
+    any ptr = (char *)_HEAP_ + spot;
     __meta__ c = { .size = sz, .length = len, .id = 0x7C };
 
     mem_cpy(ptr, &c, HEAP_META_SZ);
@@ -86,7 +84,7 @@ any allocate(int sz, int len) {
 	{
 		char buff[100];
 		ptr_to_str(ptr, buff);
-		print(buff);
+		print("[ + ] Allocated "), _printi(sz ? sz * len : len), print(" to "), println(buff);
 	}
 
     return (any)((char *)ptr + HEAP_META_SZ);

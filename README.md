@@ -6,31 +6,26 @@
 # Some Info
 
 - The project is still in development!
-- The library is a C backend and aimming to cross-compile directly to machine code
+- The library is a minimal C backend with a custom loader to link!
 
 # Things clib+ doesn't support yet
 
 - No argument syntax checking<br />
 	``Expects: <input> -o <output>``<br />
-	``Optional flags: --strip --nolink``
+	``Optional flags: --strip --c``
 - Multiple files
 - C flags
 - Linker flags
-
-### What does it do?
-
-- Targets the architecture for built-in tooling (ASM libs)
-- Built-in serves as the standard lib, minimal abstractions
-- Cross-architect compilation
-
-### What is it used for?
-
-- Creating raw binaries for OS development and building
 
 ### Supported Architectures
 
 - x86
 - x86_64
+- AMD
+- ARM v5/v7
+- Aarch64
+- RISC-V
+- WIN64
 
 # Installation
 
@@ -47,11 +42,11 @@ make # make tcc (for tcc (not complete, testing stage))
 # Standard Lib Use
 
 ```c
-#define __CLIBP__
-<headers/init.h>
+<clibp.h>
 
-void entry() {
-	print("Hello World");
+int entry() {
+	println("Hello World");
+	return 0;
 }
 ```
 
