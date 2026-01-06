@@ -25,7 +25,7 @@ sArr get_all_object_files()
 		return NULL;
 	}
 
-	sArr n = allocate(0, sizeof(str) * (count + 1));
+	sArr n = allocate(sizeof(str), count + 1);
 	if(n == NULL) println("error");
 
 	int idx = 0;
