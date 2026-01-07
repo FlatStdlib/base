@@ -21,10 +21,6 @@ int entry()
     /* heap test */
 	println("Attempting to init heap...");
 
-	HEAP_DEBUG = 1;
-    set_heap_sz(_LARGE_MEM_SZ_);
-	init_mem();
-
     int heap_check = __is_heap_init__();
 	print("Heap: "), printi(heap_check), 
     print(": "), printi(__get_total_mem_used__()), 
