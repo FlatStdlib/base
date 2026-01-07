@@ -1,6 +1,6 @@
 #include "../headers/clibp.h"
 
-int _HEAP_PAGE_         = 0;
+int _HEAP_PAGE_         = 4096;
 int _HEAP_PAGE_SZ_ 		= 4096;
 heap_t _HEAP_ 			= NULL;
 int used_mem 			= 0;
@@ -31,8 +31,9 @@ fn req_memory()
 }
 
 fn init_mem() {
+	_printi(_HEAP_PAGE_), print("\n");
     long ret = __sys_mmap(0, _HEAP_PAGE_, 0x1|0x2, 0x2|0x20, -1, 0);
-    if (ret < 0) {
+    if (ret <= 0) {
         println("[ - ] Error, mmap failed:"), _printi(ret), print("\n");
         return;
     }

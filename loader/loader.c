@@ -99,7 +99,7 @@ void _start() {
     int __ARGC__ = ___get_args(__ARGV__);
 
 	set_heap_debug();
-	set_heap_sz(4096 * 3);
+	set_heap_sz(4096 * 1);
 	init_mem();
     int code = entry(__ARGC__, __ARGV__);
     uninit_mem();
