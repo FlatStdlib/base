@@ -3,8 +3,26 @@
 sArr ARGV;
 int ARGC;
 
+/* Compiler types supported with clib+ */
+#define COMPILER_TYPE_COUNT 3
+static string COMPILER_TYPES[] = {
+    "/usr/bin/gcc/ -nostdlib -ffreestanding -c",
+    "/usr/bin/tcc -nostdlib -ffreestanding -std=c99 -c",
+    0
+};
+
+/* returns a stack const */
+static string get_compiler_type_cmd(string cmd_buffer, string compiler)
+{
+    for(int i = 0; i < COMPILER_TYPE_COUNT; i++)
+        if(find_str(COMPILER_TYPES[i], compiler) > -1)
+            return COMPILER_TYPES[i];
+
+    return 0;
+}
+
 /* Fetch all c files provided in cmdline */
-sArr get_all_c_files()
+static sArr get_all_c_files()
 {
 	int count = 0;
 	for(int i = 0; i < ARGC; i++)
@@ -38,7 +56,7 @@ sArr get_all_c_files()
 }
 
 /* Fetch all object files provided in cmdline */
-sArr get_all_object_files()
+static sArr get_all_object_files()
 {
 	int count = 0;
 	for(int i = 0; i < ARGC; i++)
@@ -72,18 +90,20 @@ sArr get_all_object_files()
 	return n;
 }
 
-string create_string(string preset)
+bool arr_contains(array arr, i32 size, string value)
 {
-	int len = str_len(preset);
-	string n = allocate(0, len + 1);
+	for(i32 i = 0; i < size; i++)
+	{
+		if(str_cmp(arr[i], value))
+			return true;
+	}
 
-	mem_cpy(n, preset, len);
-	return n;
+	return false;
 }
 
 int entry(int argc, char *argv[])
 {
-	if(argc == 0)
+	if(argc < 2)
 	{
 		println("[ x ] error, unable to get cmdline args");
 		return 1;
@@ -91,17 +111,23 @@ int entry(int argc, char *argv[])
 
 	ARGC = argc;
 	ARGV = argv;
+	string COMPILE_CMD = allocate(0, 1024);
+	i32 idx = 0;
 
-	sArr test = get_all_object_files();
-	if(!test)
+	string compiler = get_compiler_type_cmd(
+		COMPILE_CMD,
+		arr_contains(ARGV, ARGC, "--tcc") ? "tcc" : "gcc"
+	);
+
+	if(arr_contains(ARGV, ARGC, "-c"))
 	{
-		println("ERROR");
-		return 1;
+		// exit here since clibp already compile to object file
 	}
 
-	println("Object Files");
-	for(int i = 0; test[i] != NULL; i++)
-		_printi(i), print(": "), println((string)test[i]);
-
+	if(arr_contains(ARGV, ARGC, "--strip"))
+	{
+		// strip the binary
+		// CMD: strip <file>
+	}
 	return 0;
 }
