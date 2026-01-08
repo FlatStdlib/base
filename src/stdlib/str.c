@@ -14,15 +14,32 @@ fn _sprintf(string buffer, string format, any *args)
             i++;
             continue;
         } else if(format[i] == '%' && format[i + 1] == 'd') {
-            istr(buffer + idx, *(int *)args[arg]);
+            int t = *(int *)args[arg];
+            string num = int_to_str(*(char *)args[arg]);
+            if(t > 9)
+            	for(int c = 0; num[c] != '\0'; c++)
+            		buffer[idx++] = num[c];
+           	else
+           		buffer[idx++] = t + '0';
 
+           	pfree(num);
             arg++;
             i++;
             continue;
+        } else if(format[i] == '%' && format[i + 1] == 'p') {
+			char ptr_buff[100];
+			ptr_to_str(args[arg], ptr_buff);
+
+			for(int c = 0; ptr_buff[c] != '\0'; c++)
+				buffer[idx++] = ptr_buff[c];
+
+			arg++;
+			i += 2;
         }
 
         buffer[idx++] = format[i];
     }
+    buffer[idx] = '\0';
 }
 
 fn istr(string dest, int num)

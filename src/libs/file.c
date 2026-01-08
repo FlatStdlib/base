@@ -5,7 +5,7 @@ fd_t open_file(const char *filename, FILE_MODE mode)
     __syscall(_SYS_OPEN, (long)filename, (long)mode, 0, -1, -1, -1);
 	register long fd asm("rax");
     if(fd == -2)
-		print("[ - ] Error, No file or directory\n");
+		clibp_panic("[ - ] Error, No file or directory");
 
     if(fd < 0)
         return -1;

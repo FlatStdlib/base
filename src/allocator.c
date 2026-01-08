@@ -32,10 +32,8 @@ fn req_memory()
 
 fn init_mem() {
     long ret = __sys_mmap(0, _HEAP_PAGE_, 0x1|0x2, 0x2|0x20, -1, 0);
-    if (ret <= 0) {
-        println("[ - ] Error, mmap failed:"), _printi(ret), print("\n");
-        return;
-    }
+    if (ret <= 0)
+        clibp_panic("[ - ] Error, mmap failed!");
 
 	_HEAP_ = (ptr)ret;
 
@@ -72,10 +70,8 @@ any allocate(int sz, int len) {
         return NULL;
 
     int spot = find_space(mem_needed);
-    if (spot == -1) {
-        print("[ - ] Unable to find space!\n");
-        return NULL;
-    }
+    if (spot == -1)
+        clibp_panic("[ - ] Unable to find space!\n");
 
     any ptr = (char *)_HEAP_ + spot;
     __meta__ c = { .size = sz, .length = len, .id = 0x7C };

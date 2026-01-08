@@ -18,8 +18,8 @@ ptr create__struct(size_t *sizes)
 	}
 
 	_struct *p = malloc(sizeof(_struct) + cap);
-	p->capacity = cap;
-	p->field_count = 0;
+	p->capacity = cap + sizeof(_struct);
+	p->field_count = idx;
 
 	return (ptr)((char *)p) + sizeof(_struct);
 }
@@ -29,17 +29,18 @@ int main()
 {
 	size_t sizes[] = {
 		sizeof(int) * 2,
-		10
+		10,
+		0
 	};
 
-	void *n = create__struct(sizes);
-	printf("%ld\n", sizeof(int));
+	ptr *n = create__struct(sizes);
+
 	((int *)n)[0] = 10;
 	((int *)n)[1] = 22;
 	for(int i = 0; i < 2; i++)
-		printf("%d\n", ((int *)n)[i]);
+		printf("[%d]: %d\n", i, (*(int *)n * i));
 
 	strcpy((char *)n + CHAR_OFFSET, "TEST");
 	printf("%s\n", ((char *)n + CHAR_OFFSET));
-	return 1;
+	return 0;
 }

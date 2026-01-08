@@ -8,10 +8,9 @@ _sock_t listen_tcp(const string ip, int port, int concurrent)
 	__syscall(_SYS_SOCKET, 2, 1, 0, 0, 0, 0);
 	register int sck asm("rax");
 	int sock = sck;
-	if(sock < 0)
-	{
-		print("[ x ] Error,q Unable to create socket...!\n");
-		__exit(1);
+	if(sock < 0) {
+		println("[ x ] Error, Unable to create socket...!");
+		return (_sock_t){-1};
 	}
 
 	sockaddr_in server_addr, client_addr;
@@ -19,8 +18,8 @@ _sock_t listen_tcp(const string ip, int port, int concurrent)
 	server_addr.sin_family = 0;
 	if(ip && !parse_ipv4(ip, &server_addr.sin_addr))
 	{
-		print("[ x ] Error, Invalid IP for socket...!\n");
-		__exit(1);
+		println("[ x ] Error, Invalid IP for socket...!");
+		return (_sock_t){-1};
 	} else {
 		server_addr.sin_addr = 0;
 	}
@@ -32,24 +31,24 @@ _sock_t listen_tcp(const string ip, int port, int concurrent)
 	register int cc asm("rax");
 	if(cc < 0)
 	{
-		print("[ x ] Error, Unable to set socket option...!\n");
-		__exit(1);
+		println("[ x ] Error, Unable to set socket option...!");
+		return (_sock_t){-1};
 	}
 
 	__syscall(49, sock, (long)&server_addr, sizeof(server_addr), 0, 0, 0);
 	register int chk asm("rax");
 	if(chk < 0)
 	{
-		print("[ x ] Error, Unable to bind socket...!\n");
-		__exit(1);
+		println("[ x ] Error, Unable to bind socket...!");
+		return (_sock_t){-1};
 	}
 
 	__syscall(_SYS_LISTEN, sock, concurrent, 0, 0, 0, 0);
 	register int c asm("rax");
 	if(c < 0)
 	{
-		print("[ x ] Error, Unable to listen to socket....!\n");
-		__exit(1);
+		println("[ x ] Error, Unable to listen to socket....!");
+		return (_sock_t){-1};
 	}
 
 	_sock_t socket = {

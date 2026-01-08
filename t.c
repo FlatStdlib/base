@@ -145,13 +145,11 @@ int entry(int argc, char *argv[])
 		skip++;
 	}
 
-	if(skip + 1 >= ARGC)
-		return 1;
-
-	int file_len = str_len(ARGV[skip + 1]);
-	if(file_len > 2 && ARGV[skip + 1][file_len - 1] == 'c' && ARGV[skip + 1][file_len - 2] == '.')
+	for(int i = 0; i < ARGC; i++)
 	{
-		println("C File");
+		char n[100];
+		__sprintf(n, "[ %d ]: %p -> %s\n", (void *)&i, ARGV[i], ARGV[i]);
+		print(n);
 	}
 
 	return 0;
@@ -161,5 +159,6 @@ int entry(int argc, char *argv[])
 int main(int argc, char *argv[])
 {
 	int exit = entry(argc, argv);
+	printf("HERE\n");
 	return exit;
 }

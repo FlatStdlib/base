@@ -135,31 +135,6 @@ void get_cmdline_args()
     }
 }
 
-/* GCC with default flags */
-#define COMPILER_TYPE_COUNT 3
-char *COMPILER_TYPES[] = {
-    "/usr/bin/gcc/ -nostdlib -ffreestanding -c",
-    "/usr/bin/tcc -nostdlib -ffreestanding -std=c99 -c",
-    0
-};
-
-void get_compiler_type_cmd(char *cmd_buffer, char *compiler)
-{
-    for(int i = 0; i < COMPILER_TYPE_COUNT; i++)
-    {
-        if(find_str((char *)((char **)COMPILER_TYPES[i])[0], compiler))
-        {
-            // found compiler
-            char **cmd_args = ((char **)((char ***)COMPILER_TYPES)[i][1]);
-            for(int arg = 0; cmd_args[arg] != 0; arg++)
-            {
-                stra(cmd_buffer, cmd_args[arg]);
-                stra(cmd_buffer, " ");
-            }
-        }
-    }
-}
-
 void _start() {
     get_cmdline_args();
 

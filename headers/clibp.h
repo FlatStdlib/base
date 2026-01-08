@@ -103,8 +103,7 @@ int 	get_args(char *argv[]);
 
 #ifdef _CLIBP_INTERNAL_H
 	#define clibp_panic(msg) 	\
-		println(msg);			\
-		__exit(1);
+			__clibp_panic(msg);
 
 	/* internal.c */
 	fn 		ptr_to_str(void *p, char *out);
@@ -113,11 +112,13 @@ int 	get_args(char *argv[]);
 	fn		printc(const char ch);
 	fn 		printi(int num);
 	fn 		_printi(int value);
+	string	int_to_str(int num);
 	fn 		print(const string buff);
 	fn		println(const string buff);
 	fn 		printsz(const string buff, int sz);
 	fn 		printa(const string *buff);
 	ptr		to_heap(ptr p, i32 sz);
+	fn		__clibp_panic(string msg);
 #endif
 
 /*
@@ -182,6 +183,7 @@ int 	get_args(char *argv[]);
 	fn_t 	_sprintf(string buffer, string format, any *args);
 	fn_t 	istr(char *dest, int num);
 	len_t 	str_len(string buffer);
+	string 	str_dup(const string buffer);
 	int   	stra(string src, const string sub);
 	bool	str_cmp(const string src, const string needle);
 	pos_t 	find_char(const string buff, const char ch, int match);

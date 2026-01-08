@@ -1058,7 +1058,7 @@ typedef struct {
 	#define _KEYCTL					 	219
 	#define _CLONE					 	220
 	#define _EXECVE					 	221
-//	#define _SYS_MMAP					 222
+	#define _SYS_MMAP					222
 	#define _FADVISE64_64				223
 	#define _SWAPON					 	224
 	#define _SWAPOFF					225
@@ -1123,7 +1123,7 @@ typedef struct {
 	#define _MOVE_MOUNT					429
 	#define _FSOPEN					 	430
 	#define _FSCONFIG					431
-	#define _FSMOUNT					 432
+	#define _FSMOUNT					432
 	#define _FSPICK					 	433
 	#define _PIDFD_OPEN					434
 	#define _CLONE3					 	435

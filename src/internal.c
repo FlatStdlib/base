@@ -54,28 +54,57 @@ fn printi(i32 num)
 
 fn _printi(int num)
 {
-	if(num == 0)
-	{
+    int temp = num, c = 0;
+    char buff[150];
+    if(num == 0)
+    {
 		print("0");
 		return;
+    }
+
+    while(temp)
+    {
+        buff[c++] = '0' + (temp % 10);
+        temp /= 10;
+    }
+
+    for(int i = 0; i < c; i++)
+    {
+        char t = buff[i], n = buff[--c];
+        buff[i] = n;
+        buff[c] = t;
+    }
+
+	print(buff);
+}
+
+string int_to_str(int num)
+{
+	int temp = num, c = 0;
+	char buff[150];
+	if(num == 0)
+	{
+		buff[0] = '0';
+		buff[1] = '\0';
+		return str_dup(buff);
 	}
 
-	int temp = num, c = 0;
-	char BUFF[500] = {0};
 	while(temp)
 	{
-		BUFF[c++] = '0' + (temp % 10);
+		buff[c++] = '0' + (temp % 10);
 		temp /= 10;
 	}
 
+	int g = c;
 	for(int i = 0; i < c; i++)
 	{
-		char t = BUFF[i], n = BUFF[--c];
-		BUFF[i] = n;
-		BUFF[c] = t;
+		char t = buff[i], n = buff[--c];
+		buff[i] = n;
+		buff[c] = t;
 	}
 
-	print(BUFF);
+	buff[g] = '\0';
+	return str_dup(buff);
 }
 
 fn print(const string buff)
@@ -96,4 +125,11 @@ ptr to_heap(ptr p, i32 sz)
 
 	((string)pointer)[sz] = '\0';
 	return pointer;
+}
+
+fn __clibp_panic(string msg)
+{
+	print(__FILE__), print(":"), _printi(__LINE__), print(" ");
+	println(msg);
+	__exit(1);
 }

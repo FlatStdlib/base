@@ -73,7 +73,7 @@ move:
 	chmod 777 /bin/gcc_clibp
 
 count:
-	wc \
+	wc -l \
 	tests/*.c \
 	src/*.c \
 	src/stdlib/*.c \
