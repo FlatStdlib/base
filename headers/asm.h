@@ -6,7 +6,7 @@
 #pragma once
 
 typedef struct {
-    int sec, nsec;
+    long sec, nsec;
 } sleep_t;
 
 #if defined(__x86__) || defined(__i386__)
@@ -938,7 +938,7 @@ typedef struct {
 	#define _FUTEX					 	422
 	#define _SET_ROBUST_LIST			99
 	#define _GET_ROBUST_LIST			100
-	#define _NANOSLEEP					101
+	#define _SYS_NANOSLEEP				101
 	#define _GETITIMER					102
 	#define _SETITIMER					103
 	#define _KEXEC_LOAD					104
