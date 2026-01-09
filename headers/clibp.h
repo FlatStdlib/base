@@ -9,19 +9,19 @@
 
 extern int __CLIBP_DEBUG__;
 #ifndef __CLIBP__
-#define __CLIBP__
-#define _CLIBP_CHAR_H
-#define _CLIBP_STR_H
-#define _CLIBP_ARR_H
-#define _CLIBP_MEM_H
-#define _CLIBP_FILE_H
-#define _CLIBP_SOCKET_H
-#define _CLIBP_INTERNAL_H
-#define _CLIBP_ALLOCATOR_H
+	#define __CLIBP__
+	#define _CLIBP_CHAR_H
+	#define _CLIBP_STR_H
+	#define _CLIBP_ARR_H
+	#define _CLIBP_MEM_H
+	#define _CLIBP_FILE_H
+	#define _CLIBP_SOCKET_H
+	#define _CLIBP_INTERNAL_H
+	#define _CLIBP_ALLOCATOR_H
 
-#define printf print
-#define nullptr_t ((void *)0)
-#define emptyptr_t ((void *)-1)
+	#define printf print
+	#define nullptr_t ((void *)0)
+	#define emptyptr_t ((void *)-1)
 #endif
 
 /*
@@ -80,10 +80,10 @@ typedef i32					pos_t;
 	Implment C Types when using -nostdlib -nostdinc
 */
 #if defined(__TINYC__) || defined(__GNUC__)
-/* Alot of libc libs, have __GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION */
-#if !defined(_STDIO_H) || !defined(__GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION)
-#undef __GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION
-#define NULL                    ((void *)0)
+	/* Alot of libc libs, have __GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION */
+	#if !defined(_STDIO_H) || !defined(__GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION)
+	#undef __GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION
+	#define NULL                    ((void *)0)
 #endif
 
 /* Implementation of the following types from stdint.h */
@@ -140,40 +140,40 @@ int 	get_input(string dest, len_t count);
 	@File: src/allocator.c
 */
 #ifdef _CLIBP_ALLOCATOR_H
-#if defined(_C_MALLOC_ALTERNATIVE)
-#define malloc allocate
-#endif
-typedef void* heap_t;
-extern heap_t               _HEAP_;
+	#if defined(_C_MALLOC_ALTERNATIVE)
+		#define malloc allocate
+	#endif
+	typedef void* heap_t;
+	extern heap_t               _HEAP_;
 
-#define _STANDARD_MEM_SZ_   4096
-#define _LARGE_MEM_SZ_      4096 * 3
-extern int					_HEAP_PAGE_;
-extern int                  _HEAP_SZ_;
-extern int                  _HEAP_PAGE_SZ_;
+	#define _STANDARD_MEM_SZ_   4096
+	#define _LARGE_MEM_SZ_      4096 * 3
+	extern int					_HEAP_PAGE_;
+	extern int                  _HEAP_SZ_;
+	extern int                  _HEAP_PAGE_SZ_;
 
-typedef struct {
-	int     size;
-	size_t  length;
-	int     id;
-} __meta__;
+	typedef struct {
+		int     size;
+		size_t  length;
+		int     id;
+	} __meta__;
 
-extern const int            HEAP_META_SZ;
-extern int                  HEAP_DEBUG;
-extern int                  used_mem;
+	extern const int            HEAP_META_SZ;
+	extern int                  HEAP_DEBUG;
+	extern int                  used_mem;
 
-fn 			set_heap_sz(int n);
-fn 			set_heap_debug();
-fn 			req_memory();
+	fn 			set_heap_sz(int n);
+	fn 			set_heap_debug();
+	fn 			req_memory();
 
-fn        	init_mem();
-fn        	uninit_mem();
-int         __get_total_mem_used__(void);
-ptr         allocate(int sz, int len);
-int         __get_size__(any ptr);
-int         __is_heap_init__();
-fn        	pfree(any ptr, int clean);
-__meta__* __get_meta__(any ptr);
+	fn        	init_mem();
+	fn        	uninit_mem();
+	int         __get_total_mem_used__(void);
+	ptr         allocate(int sz, int len);
+	int         __get_size__(any ptr);
+	int         __is_heap_init__();
+	fn        	pfree(any ptr, int clean);
+	__meta__* __get_meta__(any ptr);
 #endif
 
 /*
@@ -185,159 +185,159 @@ i32		count_int_digits(i32 num);
 	[ src/stdlib/char.c ]
 */
 #ifdef _CLIBP_CHAR_H
-i32 	is_ascii(const char c);
-i32 	is_ascii_alpha(const char c);
-i32 	count_char(const string buffer, const char ch);
-i32 	find_char(const string buffer, const char ch);
-i32 	find_char_at(const string buffer, const char ch, int match);
+	i32 	is_ascii(const char c);
+	i32 	is_ascii_alpha(const char c);
+	i32 	count_char(const string buffer, const char ch);
+	i32 	find_char(const string buffer, const char ch);
+	i32 	find_char_at(const string buffer, const char ch, int match);
 #endif
 
 
 /* stdlib/str.c */
 #ifdef _CLIBP_STR_H
-#define __sprintf(dest, format, ...) \
-		_sprintf(dest, format, (void *[]){__VA_ARGS__, 0});
+	#define __sprintf(dest, format, ...) \
+			_sprintf(dest, format, (void *[]){__VA_ARGS__, 0});
 
-fn 		ptr_to_str(void* p, char* out);
-string	int_to_str(int num);
-fn 		_sprintf(string buffer, string format, any* args);
-fn 		istr(char* dest, int num);
-len_t 	str_len(string buffer);
-string 	str_dup(const string buffer);
-int   	str_append(string src, const string sub);
-bool	str_cmp(const string src, const string needle);
-pos_t 	find_str(const string buff, const string needle);
-sArr 	split_lines(const string buffer, int* idx);
-sArr 	split_string(const string buffer, const char ch, int* idx);
-#endif
+	fn 		ptr_to_str(void* p, char* out);
+	string	int_to_str(int num);
+	fn 		_sprintf(string buffer, string format, any* args);
+	fn 		istr(char* dest, int num);
+	len_t 	str_len(string buffer);
+	string 	str_dup(const string buffer);
+	int   	str_append(string src, const string sub);
+	bool	str_cmp(const string src, const string needle);
+	pos_t 	find_str(const string buff, const string needle);
+	sArr 	split_lines(const string buffer, int* idx);
+	sArr 	split_string(const string buffer, const char ch, int* idx);
+	#endif
 
-#ifdef _CLIBP_ARR_H
-int 	arr_contains(sArr args, string needle);
+	#ifdef _CLIBP_ARR_H
+	int 	arr_contains(sArr args, string needle);
 #endif
 
 #ifdef _CLIBP_FILE_H
-typedef unsigned int fd_t;
+	typedef unsigned int fd_t;
 
-typedef enum FILE_MODE {
-	O_RDONLY = 0,		// Read
-	O_WRONLY = 01,		// Write
-	O_RDWR = 02,		// Read-Write
-	O_CREAT = 0100,		// Create
-	O_EXCL = 0200,
-	O_NOCTTY = 0400,
-	O_TRUNC = 01000		// Truncate
-} FILE_MODE;
+	typedef enum FILE_MODE {
+		O_RDONLY = 0,		// Read
+		O_WRONLY = 01,		// Write
+		O_RDWR = 02,		// Read-Write
+		O_CREAT = 0100,		// Create
+		O_EXCL = 0200,
+		O_NOCTTY = 0400,
+		O_TRUNC = 01000		// Truncate
+	} FILE_MODE;
 
-/*
-	[@DOC]
-		fd_t open_file(const char *filename, FILE_MODE mode);
+	/*
+		[@DOC]
+			fd_t open_file(const char *filename, FILE_MODE mode);
 
-		Desc;
-			open a file stream
+			Desc;
+				open a file stream
 
-		return;
-			>0 on sucess
-			-1 on fail
-*/
-fd_t	open_file(const char* filename, FILE_MODE mode, int flags);
+			return;
+				>0 on sucess
+				-1 on fail
+	*/
+	fd_t	open_file(const char* filename, FILE_MODE mode, int flags);
 
-/*
-	[@DOC]
-		int file_content_size(fd_t fd);
+	/*
+		[@DOC]
+			int file_content_size(fd_t fd);
 
-		Desc;
-			get file size
+			Desc;
+				get file size
 
-		return;
-			>0 on success
-			-1 on fail
-*/
-int		file_content_size(fd_t fd);
+			return;
+				>0 on success
+				-1 on fail
+	*/
+	int		file_content_size(fd_t fd);
 
-/*
-	[@DOC]
-		int file_read(fd_t fd, char *buffer, int sz);
+	/*
+		[@DOC]
+			int file_read(fd_t fd, char *buffer, int sz);
 
-		Desc;
-			get file content
+			Desc;
+				get file content
 
-		return;
-			>0 on scuess
-			<=0 on fail
-*/
-int		file_read(fd_t fd, char* buffer, int sz);
+			return;
+				>0 on scuess
+				<=0 on fail
+	*/
+	int		file_read(fd_t fd, char* buffer, int sz);
 
-/* file_read for unsigned char */
-#define file_uc_read(fd, buff, sz) file_read
+	/* file_read for unsigned char */
+	#define file_uc_read(fd, buff, sz) file_read
 
-/*
-	[@DOC]
-		int file_write(fd_t fd, const char *buffer, len_t len);
+	/*
+		[@DOC]
+			int file_write(fd_t fd, const char *buffer, len_t len);
 
-		Desc;
-			write to file
+			Desc;
+				write to file
 
-		return;
-			>0 on success
-			-1 on fail
-*/
-int		file_write(fd_t fd, const char* buffer, len_t len);
+			return;
+				>0 on success
+				-1 on fail
+	*/
+	int		file_write(fd_t fd, const char* buffer, len_t len);
 
-/*
-	[@DOC]
-		int file_close(fd_t fd, const char *buffer, len_t len);
+	/*
+		[@DOC]
+			int file_close(fd_t fd, const char *buffer, len_t len);
 
-		Desc;
-			close file
-*/
-fn		file_close(fd_t fd);
+			Desc;
+				close file
+	*/
+	fn		file_close(fd_t fd);
 #endif
 
 #ifdef _CLIBP_SOCKET_H
-#define AF_INET         	2
-#define SOL_SOCKET      	1
-#define SO_REUSEADDR    	2
-#define SO_RCVTIMEO 		20
+	#define AF_INET         	2
+	#define SOL_SOCKET      	1
+	#define SO_REUSEADDR    	2
+	#define SO_RCVTIMEO 		20
 
-struct sockaddr_un {
-    u16  					sun_family;
-    char 					sun_path[108];
-};
+	struct sockaddr_un {
+	    u16  					sun_family;
+	    char 					sun_path[108];
+	};
 
-typedef struct {
-    u16 					sin_family;
-    u16 					sin_port;
-    struct {
-		u32 s_addr;
-	} 						sin_addr;
-    u8 						sin_zero[8];
-} _sockaddr_in;
+	typedef struct {
+	    u16 					sin_family;
+	    u16 					sin_port;
+	    struct {
+			u32 s_addr;
+		} 						sin_addr;
+	    u8 						sin_zero[8];
+	} _sockaddr_in;
 
-struct sockaddr_in6{
-    u16 					sin6_family;
-    u16 					sin6_port;
-    i32 					sin6_flowinfo;
-    struct {
-		unsigned char s6_addr[16];
-	} 						sin6_addr;
-    i32 					sin6_scope_id;
-};
+	struct sockaddr_in6{
+	    u16 					sin6_family;
+	    u16 					sin6_port;
+	    i32 					sin6_flowinfo;
+	    struct {
+			unsigned char s6_addr[16];
+		} 						sin6_addr;
+	    i32 					sin6_scope_id;
+	};
 
-typedef struct {
-	int             				fd;
-	_sockaddr_in					addr;
+	typedef struct {
+		int             				fd;
+		_sockaddr_in					addr;
 
-	int             				buff_len;
-} _sock_t;
+		int             				buff_len;
+	} _sock_t;
 
-typedef _sock_t* sock_t;
-sock_t listen_tcp(const string ip, int port, int concurrent);
-sock_t sock_accept(sock_t sock, len_t len);
-int sock_write(sock_t sock, string buffer);
-string sock_read(sock_t sock);
-int parse_ipv4(const char* ip, unsigned int* out);
-char* convert_ip(unsigned int ip);
-unsigned short _htons(unsigned short x);
-unsigned int _htonl(unsigned int x);
-fn sock_close(sock_t);
+	typedef _sock_t* sock_t;
+	sock_t listen_tcp(const string ip, int port, int concurrent);
+	sock_t sock_accept(sock_t sock, len_t len);
+	int sock_write(sock_t sock, string buffer);
+	string sock_read(sock_t sock);
+	int parse_ipv4(const char* ip, unsigned int* out);
+	char* convert_ip(unsigned int ip);
+	unsigned short _htons(unsigned short x);
+	unsigned int _htonl(unsigned int x);
+	fn sock_close(sock_t);
 #endif
