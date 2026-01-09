@@ -46,22 +46,22 @@ fn istr(string dest, int num)
 {
 	int temp = num, c = 0;
 	char BUFF[500] = {0};
-    while(temp)
+  while(temp)
     {
     	BUFF[c++] = '0' + (temp % 10);
 		temp /= 10;
 	}
 
-    for(int i = 0; i < c; i++)
-    {
-    	char t = BUFF[i], n = BUFF[--c];
-        BUFF[i] = n;
-        BUFF[c] = t;
-    }
+  for(int i = 0; i < c; i++)
+  {
+  	char t = BUFF[i], n = BUFF[--c];
+      BUFF[i] = n;
+      BUFF[c] = t;
+  }
 
-    for(int i = 0; BUFF[i] != '\0'; i++) {
-    	dest[i] = BUFF[i];
-    }
+  for(int i = 0; BUFF[i] != '\0'; i++) {
+  	dest[i] = BUFF[i];
+  }
 }
 
 string str_dup(const string buff)
