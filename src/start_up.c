@@ -28,8 +28,8 @@ static int get_cmd_info(string buffer) {
 
     if(fd <= 0)
         return -1;
-    
-    char BUFFER[255] = {0};
+
+    char BUFFER[1024] = {0};
     long bytes = __syscall__(fd, (long)BUFFER, 255, -1, -1, -1, _SYS_READ);
     _mem_cpy(buffer, BUFFER, bytes);
 

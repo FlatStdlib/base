@@ -1,6 +1,11 @@
 #include <clibp.h>
 
-char **split_lines(string buffer, int *idx)
+sArr split_lines(string buffer, int *idx)
+{
+	return split_string(buffer, '\n', idx);
+}
+
+sArr split_string(string buffer, const char ch, int *idx)
 {
     if(!buffer)
         return NULL;
@@ -17,7 +22,7 @@ char **split_lines(string buffer, int *idx)
         if(buffer[i] == '\0')
             break;
 
-        if(buffer[i] == '\n')
+        if(buffer[i] == ch)
         {
             int n = str_len(LINE);
             if(n == 0)
@@ -31,7 +36,7 @@ char **split_lines(string buffer, int *idx)
             sArr new_arr = to_heap(arr, sizeof(string) * ((*idx) + 1));
             pfree(arr, 1);
             arr = new_arr;
-            if(!arr) printf("ERR\n");
+            if(!arr) println("ERR\n");
             arr[*idx] = NULL;
             LINE[0] = '\0';
             _len = 0;
@@ -63,7 +68,7 @@ const string info = "PRETTY_NAME=\"Ubuntu 24.04.3 LTS\"\n"
 	"UBUNTU_CODENAME=noble\n"
 	"LOGO=ubuntu-logo";
 
-int entry()
+int entry(i32 argc, sArr args)
 {
 	int line_count = 0;
 	sArr test = split_lines(info, &line_count);

@@ -72,7 +72,7 @@ string str_dup(const string buff)
 	string buffer = (string)allocate(0, len + 1);
 	mem_cpy(buffer, buff, len);
 
-	buffer[len - 1] = '\0';
+	buffer[len] = '\0';
 	return buffer;
 }
 
