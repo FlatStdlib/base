@@ -30,7 +30,7 @@ int entry() {
     for(int i = 0; i < 10; i++)
         n[i] = i;
 
-    for(int i = 0; i < 10; i++) _printi(n[i]), print("\n");
+    for(int i = 0; i < 10; i++) (i == 0 ? printi(n[i]) : _printi(n[i])), print("\n");
 
     /* str array */
     string name = allocate(0, 10);

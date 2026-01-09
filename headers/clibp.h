@@ -55,21 +55,21 @@ typedef unsigned int		u32;
 typedef unsigned long long 	u64;
 
 /* string */
-typedef char* string;
+typedef char* 				string;
 
 /* general array */
-typedef i32* array;
+typedef i32* 				array;
 
 /* int array and char array */
-typedef i32* iArr;
-typedef string* sArr;
+typedef i32* 				iArr;
+typedef string* 			sArr;
 
-typedef void* any;
+typedef void* 				any;
 typedef void 				fn;
-typedef void* (*handler_t)();
+typedef void* 				(*handler_t)();
 
 /* backend purposes only */
-typedef void* ptr;
+typedef void* 				ptr;
 
 /* Counters */
 typedef i32 				len_t;
@@ -294,30 +294,31 @@ fn		file_close(fd_t fd);
 #endif
 
 #ifdef _CLIBP_SOCKET_H
-#define AF_INET         2
-#define SOL_SOCKET      1
-#define SO_REUSEADDR    2
+#define AF_INET         	2
+#define SOL_SOCKET      	1
+#define SO_REUSEADDR    	2
+#define SO_RCVTIMEO 		20
 
 struct sockaddr_un {
-    u16  			sun_family;
-    char 			sun_path[108];
+    u16  					sun_family;
+    char 					sun_path[108];
 };
 
 typedef struct {
-    u16 		sin_family;
-    u16 		sin_port;
-    struct { 
-		u32 s_addr; 
-	} 			sin_addr;
-    u8 			sin_zero[8];
+    u16 					sin_family;
+    u16 					sin_port;
+    struct {
+		u32 s_addr;
+	} 						sin_addr;
+    u8 						sin_zero[8];
 } _sockaddr_in;
 
 struct sockaddr_in6{
-    u16 				sin6_family;
-    u16 				sin6_port;
-    i32 				sin6_flowinfo;
-    struct { 
-		unsigned char s6_addr[16]; 
+    u16 					sin6_family;
+    u16 					sin6_port;
+    i32 					sin6_flowinfo;
+    struct {
+		unsigned char s6_addr[16];
 	} 						sin6_addr;
     i32 					sin6_scope_id;
 };
