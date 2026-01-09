@@ -1,6 +1,5 @@
 #include "../../headers/clibp.h"
 
-//substituted.
 string int_to_str(int value)
 {
     static char buffer[32];

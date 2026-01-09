@@ -31,75 +31,45 @@ fn print_sz(const string buffer, i32 sz)
 
 fn printc(const char ch)
 {
-	char BUFF[2] = {0};
+	char BUFF[2] = { 0 };
 	BUFF[0] = ch;
 	print(BUFF);
 }
 
 fn printi(i32 num)
 {
-	char BUFF[5] = {0};
+	char BUFF[5] = { 0 };
 	BUFF[0] = '0' + num;
 	print(BUFF);
 }
 
 fn _printi(int num)
 {
-    int temp = num, c = 0;
-    char buff[150];
-//    if(num == 0)
-//    {
-//		print("0");
-//		return;
-//    }
+	int temp = num, c = 0;
+	char buff[150];
+	//    if(num == 0)
+	//    {
+	//		print("0");
+	//		return;
+	//    }
 
-    while(temp)
-    {
-        buff[c++] = '0' + (temp % 10);
-        temp /= 10;
-    }
+	while (temp)
+	{
+		buff[c++] = '0' + (temp % 10);
+		temp /= 10;
+	}
 
-    for(int i = 0; i < c; i++)
-    {
-        char t = buff[i], n = buff[--c];
-        buff[i] = n;
-        buff[c] = t;
-    }
+	for (int i = 0; i < c; i++)
+	{
+		char t = buff[i], n = buff[--c];
+		buff[i] = n;
+		buff[c] = t;
+	}
 
 	print(buff);
 }
 
 //ptr_to_str moved to str.c
-
-//this ill been moved to str.c!
-//string int_to_str(int num)
-//{
-//	int temp = num, c = 0;
-//	char buff[150];
-//	if(num == 0)
-//	{
-//		buff[0] = '0';
-//		buff[1] = '\0';
-//		return str_dup(buff);
-//	}
-//
-//	while(temp)
-//	{
-//		buff[c++] = '0' + (temp % 10);
-//		temp /= 10;
-//	}
-//
-//	int g = c;
-//	for(int i = 0; i < c; i++)
-//	{
-//		char t = buff[i], n = buff[--c];
-//		buff[i] = n;
-//		buff[c] = t;
-//	}
-//
-//	buff[g] = '\0';
-//	return str_dup(buff);
-//}
 
 fn print(const string buff)
 {
@@ -114,7 +84,7 @@ fn println(const string buff)
 
 fn print_args(sArr arr)
 {
-	for(int i = 0; arr[i] != NULL; i++)
+	for (int i = 0; arr[i] != NULL; i++)
 	{
 		print(arr[i]);
 	}
@@ -132,7 +102,7 @@ ptr to_heap(ptr p, i32 sz)
 fn __clibp_panic(string msg, string file, int line)
 {
 	print(file), print(":"), _printi(line),
-	print(" -> "), println(msg);
+		print(" -> "), println(msg);
 
 	__exit(1);
 }
