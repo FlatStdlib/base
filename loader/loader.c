@@ -96,7 +96,7 @@ void _start() {
     char *__ARGV__[80];
     int __ARGC__ = ___get_args(__ARGV__);
 
-	set_heap_sz(4096 * 1);
+	set_heap_sz(4096 * 2);
 	init_mem();
     int code = entry(__ARGC__, __ARGV__);
     uninit_mem();

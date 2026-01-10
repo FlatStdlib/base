@@ -35,6 +35,7 @@ sock_t listen_tcp(const string ip, int port, int concurrent)
 	sock_t socket = allocate(0, sizeof(_sock_t));
 	socket->fd = sock;
 	socket->addr = addr;
+
 	return socket;
 }
 
@@ -45,7 +46,7 @@ sock_t sock_accept(sock_t server, len_t len)
 	#elif defined(__x86_64__)
 		long client_fd = __syscall__(server->fd, 0, 0, -1, -1, -1, _SYS_ACCEPT);
 	#endif
-	
+
 	if(client_fd < 0)
 		return NULL;
 
@@ -152,5 +153,5 @@ unsigned int _htonl(unsigned int x)
 fn sock_close(sock_t sock)
 {
 	__syscall__(sock->fd, -1, -1, -1, -1, -1, _SYS_CLOSE);
-	mem_set(sock, 0, sizeof(_sock_t));
+	pfree(sock, 1);
 }

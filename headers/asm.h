@@ -5,9 +5,9 @@
 */
 #pragma once
 
-typedef struct {
+struct sleep_t {
     long sec, nsec;
-} sleep_t;
+};
 
 #if defined(__x86__) || defined(__i386__)
 	#define MAX_REGISTER 6
@@ -1130,7 +1130,7 @@ typedef struct {
 	#define _FSMOUNT					432
 	#define _FSPICK					 	433
 	#define _PIDFD_OPEN					434
-	#define _CLONE3					 	435
+	#define _SYS_CLONE3					435
 	#define _CLOSE_RANGE				436
 	#define _OPENAT2					437
 	#define _PIDFD_GETFD				438

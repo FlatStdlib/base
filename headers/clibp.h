@@ -341,3 +341,23 @@ i32		count_int_digits(i32 num);
 	unsigned int _htonl(unsigned int x);
 	fn sock_close(sock_t);
 #endif
+
+#ifndef _CLIBP_THREAD_H
+	#define PROT_READ   	0x1
+	#define PROT_WRITE		0x2
+	#define PROT_EXEC   	0x4
+	#define PROT_NONE   	0x0
+
+	#define MAP_SHARED  	0x01
+	#define MAP_PRIVATE 	0x02
+	#define MAP_FIXED   	0x10
+	#define MAP_ANONYMOUS 	0x20
+	#define MAP_STACK 		0x20000 // Currently linux specific
+
+	#define CLONE_VM        0x00000100
+	#define CLONE_FS        0x00000200
+	#define CLONE_FILES     0x00000400
+	#define CLONE_SIGHAND   0x00000800
+	#define CLONE_SYSVSEM   0x00040000
+	#define CLONE_THREAD    0x00010000
+#endif
