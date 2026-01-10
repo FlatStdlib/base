@@ -16,6 +16,7 @@ extern int __CLIBP_DEBUG__;
 	#define _CLIBP_MEM_H
 	#define _CLIBP_FILE_H
 	#define _CLIBP_SOCKET_H
+	#define _CLIBP_THREAD_H
 	#define _CLIBP_INTERNAL_H
 	#define _CLIBP_ALLOCATOR_H
 
@@ -143,6 +144,18 @@ int 	get_input(string dest, len_t count);
 	#if defined(_C_MALLOC_ALTERNATIVE)
 		#define malloc allocate
 	#endif
+	
+	#define PROT_READ   	0x1
+	#define PROT_WRITE		0x2
+	#define PROT_EXEC   	0x4
+	#define PROT_NONE   	0x0
+
+	#define MAP_SHARED  	0x01
+	#define MAP_PRIVATE 	0x02
+	#define MAP_FIXED   	0x10
+	#define MAP_ANONYMOUS 	0x20
+	#define MAP_STACK 		0x20000
+
 	typedef void* heap_t;
 	extern heap_t               _HEAP_;
 
@@ -219,13 +232,13 @@ i32		count_int_digits(i32 num);
 	typedef unsigned int fd_t;
 
 	typedef enum FILE_MODE {
-		O_RDONLY = 0,		// Read
-		O_WRONLY = 01,		// Write
-		O_RDWR = 02,		// Read-Write
-		O_CREAT = 0100,		// Create
-		O_EXCL = 0200,
-		O_NOCTTY = 0400,
-		O_TRUNC = 01000		// Truncate
+		O_RDONLY 	= 0,		// Read
+		O_WRONLY 	= 01,		// Write
+		O_RDWR 		= 02,		// Read-Write
+		O_CREAT 	= 0100,		// Create
+		O_EXCL 		= 0200,
+		O_NOCTTY 	= 0400,
+		O_TRUNC 	= 01000		// Truncate
 	} FILE_MODE;
 
 	/*
@@ -342,22 +355,17 @@ i32		count_int_digits(i32 num);
 	fn sock_close(sock_t);
 #endif
 
-#ifndef _CLIBP_THREAD_H
-	#define PROT_READ   	0x1
-	#define PROT_WRITE		0x2
-	#define PROT_EXEC   	0x4
-	#define PROT_NONE   	0x0
-
-	#define MAP_SHARED  	0x01
-	#define MAP_PRIVATE 	0x02
-	#define MAP_FIXED   	0x10
-	#define MAP_ANONYMOUS 	0x20
-	#define MAP_STACK 		0x20000 // Currently linux specific
-
-	#define CLONE_VM        0x00000100
-	#define CLONE_FS        0x00000200
-	#define CLONE_FILES     0x00000400
-	#define CLONE_SIGHAND   0x00000800
-	#define CLONE_SYSVSEM   0x00040000
-	#define CLONE_THREAD    0x00010000
+#ifdef _CLIBP_THREAD_H
+	typedef struct
+	{
+		ptr 	(*fnc)();
+		ptr		arguments;
+		i8 		wait;
+		i8 		finished;
+		i32		pid;
+		i32		ttid;
+	} thread;
+	
+	thread start_thread(void *(*fnc)(), ptr p, int wait);
+	fn thread_kill(thread *t);
 #endif
