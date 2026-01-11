@@ -22,6 +22,23 @@ int get_input(string dest, i32 count) {
 	return bytes_read;
 }
 
+fn execute(string app, sArr args)
+{
+	if(!app || !args)
+		return;
+
+	long pid = __syscall__(0, 0, 0, -1, -1, -1, _SYS_FORK);
+
+	if(pid == 0)
+	{
+		__syscall__((long)app, (long)args, 0, -1, -1, -1, _SYS_EXECVE);
+	} else if(pid > 0) {
+    	__syscall__(pid, 0, 0, -1, -1, -1, _SYS_WAIT4);
+	} else {
+    	__syscall__(1, (long)"fork error\n", 7, -1, -1, -1, _SYS_WRITE);
+	}
+}
+
 fn print_sz(const string buffer, i32 sz)
 {
 	__syscall__(1, (long)buffer, sz, 0, 0, 0, _SYS_WRITE);
@@ -57,14 +74,15 @@ fn _printi(int num)
         temp /= 10;
     }
 
-    for(int i = 0; i < c; i++)
+	int i;
+    for(i = 0; i < c; i++)
     {
         char t = buff[i], n = buff[--c];
         buff[i] = n;
         buff[c] = t;
     }
 
-	print(buff);
+	print_sz(buff, i + 1);
 }
 
 fn print(const string buff)

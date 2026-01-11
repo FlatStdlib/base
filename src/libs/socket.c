@@ -57,6 +57,11 @@ sock_t sock_accept(sock_t server, len_t len)
 	return client;
 }
 
+int create_socket(int family, int type, int protocol)
+{
+    return __syscall__(family, type, protocol, 0, 0, 0, _SYS_SOCKET);
+}
+
 int sock_write(sock_t sock, string buffer)
 {
 	return __syscall__(sock->fd, (long)buffer, str_len(buffer), -1, -1, -1, _SYS_WRITE);
@@ -77,9 +82,10 @@ string sock_read(sock_t sock)
 	return NULL;
 }
 
-int create_socket(int family, int type, int protocol)
+fn sock_close(sock_t sock)
 {
-	return __syscall__(family, type, protocol, 0, 0, 0, _SYS_SOCKET);
+	__syscall__(sock->fd, -1, -1, -1, -1, -1, _SYS_CLOSE);
+	pfree(sock, 1);
 }
 
 int parse_ipv4(const char *ip, unsigned int *out)
@@ -148,10 +154,4 @@ unsigned int _htonl(unsigned int x)
            ((x & 0x0000FF00) << 8)  |
            ((x & 0x00FF0000) >> 8)  |
            ((x & 0xFF000000) >> 24);
-}
-
-fn sock_close(sock_t sock)
-{
-	__syscall__(sock->fd, -1, -1, -1, -1, -1, _SYS_CLOSE);
-	pfree(sock, 1);
 }

@@ -15,9 +15,10 @@ fn ptr_to_str(ptr p, string out)
 	out[idx] = '\0';
 }
 
+/* Returns an string on the heap */
 string int_to_str(int num)
 {
-	char buff[12]; // int32 + '\0'
+	char buff[12];
 	int i = 0;
 	bool neg = false;
 
@@ -58,7 +59,7 @@ fn _sprintf(string buffer, string format, any* args)
 	{
 		if (format[i] == '%' && format[i + 1] == 's')
 		{
-			char* s = ((char**)args)[arg];
+			string s = ((sArr)args)[arg];
 			if (!s) s = "(null)";
 
 			for (int c = 0; s[c] != '\0'; c++)
@@ -189,7 +190,52 @@ pos_t find_string(const string buff, const string needle) {
 
 sArr split_lines(const string buffer, int* idx)
 {
-	return split_string(buffer, '\n', idx);
+	if (!buffer)
+    	return NULL;
+
+	i32 len = str_len(buffer);
+    i32 lines = count_char(buffer, '\n');
+    sArr arr = allocate(sizeof(string), lines + 1);
+    *idx = 0;
+    int _len = 0;
+
+    char LINE[len];
+    for (int i = 0; i < len; i++)
+    {
+    	if (buffer[i] == '\0')
+        	break;
+
+        if (buffer[i] == '\n')
+        {
+        	int n = str_len(LINE);
+        	if (n == 0)
+    	    {
+	        	LINE[0] = ' ';
+        		LINE[1] = '\0';
+        	}
+
+        	LINE[_len] = '\0';
+    	    arr[(*idx)++] = str_dup(LINE);
+
+	        sArr new_arr = to_heap(arr, sizeof(string) * ((*idx) + 1));
+        	pfree(arr, 1);
+    	    arr = new_arr;
+	        if (!arr) println("ERR\n");
+        	arr[*idx] = NULL;
+	    	LINE[0] = '\0';
+		    _len = 0;
+    		continue;
+    	}
+
+    	LINE[_len++] = buffer[i];
+    	LINE[_len] = '\0';
+    }
+
+    if (*idx > 0)
+    return arr;
+
+	pfree(arr, 1);
+	return NULL;
 }
 
 sArr split_string(const string buffer, const char ch, int* idx)
@@ -239,4 +285,40 @@ sArr split_string(const string buffer, const char ch, int* idx)
 
 	pfree(arr, 1);
 	return NULL;
+}
+
+string get_sub_str(const string buffer, int start, int end)
+{
+	int len = end - start;
+    string buff = allocate(0, len + 1);
+
+	int idx = 0;
+    for(int i = 0; buffer[i] != '\0'; i++)
+    	if(i >= start || i <= end)
+    		buff[idx++] = buffer[i];
+
+	return buff;
+}
+
+bool is_empty(string buffer)
+{
+	if(!buffer)
+		return 0;
+
+	for(int i = 0; buffer[i] != '\0'; i++)
+	{
+		if(buffer[i] != ' ')
+			return 0;
+	}
+
+	return 1;
+}
+
+/* add to header file */
+fn byte_to_hex(u8 byte, string out) {
+    const char hex_chars[] = "0123456789ABCDEF";
+
+    out[0] = hex_chars[(byte >> 4) & 0xF]; // high nibble
+    out[1] = hex_chars[byte & 0xF];        // low nibble
+    out[2] = '\0';                          // null terminator
 }

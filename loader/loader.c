@@ -9,6 +9,7 @@
 #include "../headers/clibp.h"
 int start_up();
 int entry();
+
 /* Declare Function from build/lib.o */
 
 /* Declare Function from build/syscall.o */

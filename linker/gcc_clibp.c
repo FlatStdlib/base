@@ -94,7 +94,7 @@ static int _find_char(const char *buffer, const char ch, int sz, int match) {
     return -1;
 }
 
-void execute(char *app, char **args)
+void __execute(char *app, char **args)
 {
 	if(!app || !args)
 		return;
@@ -157,16 +157,16 @@ void _start() {
         if(arr_contains(__ARGV__, __ARGC__, "--tcc") > -1) {
             print("Compiling with TCC....\n");
             char *n[9] = {"/usr/bin/tcc", "-ffreestanding", "-std=c99", "-c", SRC_CODE_FILE, "-o", COPY, "-nostdlib", 0};
-            execute(n[0], n);
-            execute("/usr/bin/execstack", (char *[]){"/usr/bin/execstack", "-c", COPY, 0});
+            __execute(n[0], n);
+            __execute("/usr/bin/execstack", (char *[]){"/usr/bin/execstack", "-c", COPY, 0});
         } else {
             char *n[8] = {"/usr/bin/gcc", "-ffreestanding", "-c", SRC_CODE_FILE, "-o", COPY, "-nostdlib", 0};
-            execute(n[0], n);
+            __execute(n[0], n);
         }
 
         if(OPT[1] == 'c') {
             __syscall__(0, 0, 0, -1, -1, -1, _SYS_EXIT);
-        	execute(rm[0], rm);
+        	__execute(rm[0], rm);
         }
     }
 
@@ -189,14 +189,14 @@ void _start() {
         0
     };
 
-    execute(n[0], n);
-    execute(rm[0], rm);
+    __execute(n[0], n);
+    __execute(rm[0], rm);
 
 	if(arr_contains(__ARGV__, __ARGC__, "--strip") > -1)
 	{
 		print("Stripping....!\n");
 		char *strip[4] = {"/usr/bin/strip", "--strip-unneeded", OUTPUT, 0};
-		execute(strip[0], strip);
+		__execute(strip[0], strip);
 	}
 
     __syscall__(0, 0, 0, -1, -1, -1, _SYS_EXIT);

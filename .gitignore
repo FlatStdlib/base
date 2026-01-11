@@ -10,3 +10,6 @@ a.out
 p
 t
 gcc_clibp
+dump.sh
+t.txt
+t.c

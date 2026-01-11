@@ -36,11 +36,6 @@ extern int __CLIBP_DEBUG__;
 /*
 	Built-in Types
 */
-
-#define bool 				int
-#define true 				1
-#define false 				0
-
 typedef signed char			i8;
 typedef signed short int	i16;
 
@@ -76,6 +71,16 @@ typedef void* 				ptr;
 typedef i32 				len_t;
 typedef i32					pos_t;
 
+/* stdio.h */
+#define bool				i8
+#define true				1
+#define false				1
+
+/* stdint.h */
+//#undef _STDINT_H
+//typedef unsigned long int       size_t;
+//typedef unsigned long int       uintptr_t;
+
 /*
 	Compiler Detection
 	Implment C Types when using -nostdlib -nostdinc
@@ -83,14 +88,14 @@ typedef i32					pos_t;
 #if defined(__TINYC__) || defined(__GNUC__)
 	/* Alot of libc libs, have __GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION */
 	#if !defined(_STDIO_H) || !defined(__GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION)
-	#undef __GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION
-	#define NULL                    ((void *)0)
-#endif
+		#undef __GLIBC_INTERNAL_STARTING_HEADER_IMPLEMENTATION
+		#define NULL                    ((void *)0)
+	#endif
 
-/* Implementation of the following types from stdint.h */
+	/* Implementation of the following types from stdint.h */
 //    #if !defined(_STDINT_H) && !defined(__SIZE_TYPE__)
-typedef unsigned long int		size_t;
-typedef unsigned long int		uintptr_t;
+		typedef unsigned long int		size_t;
+		typedef unsigned long int		uintptr_t;
 //    #endif
 #endif
 
@@ -110,6 +115,7 @@ int 	get_args(char* argv[]);
 /* internal.c */
 fn		toggle_debug_mode();
 fn 		__exit(int code);
+fn 		execute(string app, sArr args);
 fn 		print_sz(const string buffer, int sz);
 fn		printc(const char ch);
 fn 		printi(int num);
@@ -203,6 +209,8 @@ i32		count_int_digits(i32 num);
 	i32 	count_char(const string buffer, const char ch);
 	i32 	find_char(const string buffer, const char ch);
 	i32 	find_char_at(const string buffer, const char ch, int match);
+	i32 	_find_char_at(const string buffer, const char ch, int match, int *start);
+	int 	replace_char(string buffer, const char find, const char replace);
 #endif
 
 
@@ -211,20 +219,22 @@ i32		count_int_digits(i32 num);
 	#define __sprintf(dest, format, ...) \
 			_sprintf(dest, format, (void *[]){__VA_ARGS__, 0});
 
-	fn 		ptr_to_str(void* p, char* out);
+	fn 		ptr_to_str(ptr p, string out);
 	string	int_to_str(int num);
 	fn 		_sprintf(string buffer, string format, any* args);
-	fn 		istr(char* dest, int num);
+	fn 		istr(string dest, int num);
 	len_t 	str_len(string buffer);
 	string 	str_dup(const string buffer);
 	int   	str_append(string src, const string sub);
 	bool	str_cmp(const string src, const string needle);
-	pos_t 	find_str(const string buff, const string needle);
+	pos_t 	find_string(const string buff, const string needle);
 	sArr 	split_lines(const string buffer, int* idx);
 	sArr 	split_string(const string buffer, const char ch, int* idx);
-	#endif
+	string 	get_sub_str(const string buffer, int start, int end);
+	bool 	is_empty(string buffer);
+#endif
 
-	#ifdef _CLIBP_ARR_H
+#ifdef _CLIBP_ARR_H
 	int 	arr_contains(sArr args, string needle);
 #endif
 
@@ -326,6 +336,8 @@ i32		count_int_digits(i32 num);
 	    u8 						sin_zero[8];
 	} _sockaddr_in;
 
+	typedef _sockaddr_in addr_in;
+
 	struct sockaddr_in6{
 	    u16 					sin6_family;
 	    u16 					sin6_port;
@@ -343,7 +355,9 @@ i32		count_int_digits(i32 num);
 		int             				buff_len;
 	} _sock_t;
 
-	typedef _sock_t* sock_t;
+	typedef _sock_t sock;
+	typedef _sock_t *sock_t;
+
 	sock_t listen_tcp(const string ip, int port, int concurrent);
 	sock_t sock_accept(sock_t sock, len_t len);
 	int sock_write(sock_t sock, string buffer);
