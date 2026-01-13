@@ -86,9 +86,9 @@ count:
 #
 
 compile:
-	gcc -c src/*.c \
-	src/stdlib/*.c \
-	src/libs/*.c \
+	gcc -c src/c/*.c \
+	src/c/stdlib/*.c \
+	src/c/libs/*.c \
 	-nostdlib -nostdinc
 	rm -rf build/libclibp.a
 	rm -rf build/clibp.o

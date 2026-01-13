@@ -1,6 +1,6 @@
 #define STR_H
-#include "../headers/clibp.h"
-#include "../headers/asm.h"
+#include "../../headers/clibp.h"
+#include "../../headers/asm.h"
 
 int __CLIBP_DEBUG__ = 0;
 

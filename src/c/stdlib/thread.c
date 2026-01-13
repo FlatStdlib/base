@@ -1,4 +1,4 @@
-#include "../../headers/clibp.h"
+#include "../../../headers/clibp.h"
 
 thread start_thread(void *(*fnc)(), ptr p, int wait)
 {

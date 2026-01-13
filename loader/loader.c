@@ -10,6 +10,14 @@
 int start_up();
 int entry();
 
+int *(*on_start)() = NULL;
+void *(*on_exit)() = NULL;
+
+void _atexit(void *(*handler)())
+{
+	on_exit = handler;
+}
+
 /* Declare Function from build/lib.o */
 
 /* Declare Function from build/syscall.o */
@@ -100,6 +108,9 @@ void _start() {
 	set_heap_sz(4096 * 2);
 	init_mem();
     int code = entry(__ARGC__, __ARGV__);
+
+    if(on_exit)
+    	on_exit();
     uninit_mem();
     __syscall(60, code, -1, -1, -1, -1, -1);
 }
