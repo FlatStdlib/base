@@ -26,6 +26,7 @@ int entry()
     mem_cpy(name, "Chris", 5);
 
     println(name);
+    pfree(name, 1);
     return 0;
 }
 ```
