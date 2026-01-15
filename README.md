@@ -2,8 +2,7 @@
 	<h1>clibp v3.0</h1>
 	<p>The official minimal C backend alternative to GLIBC</p>
 
-● [Home](/)
-| [Start-up](/README.md)
+● [Start-up](/README.md)
 | [Introduction](doc/intro.md)
 | [Libraries](doc/libraries.md)
 </div>
