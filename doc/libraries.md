@@ -24,8 +24,14 @@
 </td>
 <td valign=top>
 
+<p>External Libs</p>
+
+* [cWS (C Webserver)](#)
+</td>
+<td valign=top>
+
 <p>External/Public Libs</p>
 
-* [WebServer](#Installation)
+* [GLFW2](#)
 </td></tr>
 </table>
