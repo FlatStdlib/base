@@ -3,6 +3,7 @@
 	<p>The official minimal C backend alternative to GLIBC</p>
 
 ● [Home](/)
+| [Start-up](/README.md)
 | [Introduction](doc/intro.md)
 | [Libraries](doc/libraries.md)
 </div>
