@@ -12,7 +12,6 @@ void strip_input(string buffer, int *length)
 
 int entry()
 {
-	toggle_debug_mode();
 	sock_t server = listen_tcp(NULL, 420, 999);
 	if(!server) println("ERROR");
 
@@ -31,7 +30,12 @@ int entry()
 			string data = sock_read(client);
 			int len = str_len(data);
 
-			strip_input(data, &len);
+			if(data[len - 1] == '\r' || data[len - 1] == '\n')
+				data[len - 1] = '\0',	len--;
+
+			if(data[len - 1] == '\r' || data[len - 1] == '\n')
+				data[len - 1] = '\0',	len--;
+
 			if(str_cmp(data, "help"))
 			{
 				sock_write(client, "working dawg\n");
