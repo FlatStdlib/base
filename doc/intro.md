@@ -38,8 +38,25 @@ This example is a heap-based array
 
 int entry()
 {
-    
+    array arr = allocate(sizeof(char *), 2);
+
+    arr[0] = allocate(0, 10);
+    mem_cpy(arr[0], "Chris", 5);
+    arr[1] = allocate(0, 10);
+    mem_cpy(arr[1], "Chris", 5);
+
+    // Output array elements
+    for(int i = 0; i < 2; i++)
+    {
+        println(arr[i]);
+        pfree(arr[i], 1);
+    }
+
+    pfree(arr);
+    return 0;
 }
 ```
 
 # Map
+
+Coming...
