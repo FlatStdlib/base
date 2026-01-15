@@ -35,3 +35,7 @@
 * [GLFW2](#)
 </td></tr>
 </table>
+
+# Public Uploads
+
+To upload a lib, You must request a PR with documentation
