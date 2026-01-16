@@ -23,7 +23,7 @@
 * [Map](/doc/stdlib_docs/map.md)
 * [File](/doc/stdlib_docs/file.md)
 * [Thread](/doc/stdlib_docs/thread.md)
-* [Socket](#/doc/stdlib_docs/socket.md)
+* ► [Socket](#/doc/stdlib_docs/socket.md)
 </td>
 <td valign=top>
 
@@ -39,7 +39,9 @@
 </td></tr>
 </table>
 
-# Definitions
+# Socket Library
+
+## Definitions
 ```c
 #define AF_INET         2
 #define SOL_SOCKET      1
@@ -47,7 +49,7 @@
 #define SO_RCVTIMEO 	20
 ```
 
-# Type(s) / Struct
+## Type(s) / Struct
 ```c
 typedef struct {
     u16  		sun_family;
@@ -86,7 +88,7 @@ typedef _sock_t sock;
 typedef _sock_t *sock_t;
 ```
 
-# Functions
+## Functions
 ```c
 sock_t 		listen_tcp(const string ip, int port, int concurrent);
 sock_t 		sock_accept(sock_t sock, len_t len);

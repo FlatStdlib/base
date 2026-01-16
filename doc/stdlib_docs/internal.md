@@ -14,7 +14,7 @@
 
 <p>Stdlib<p>
 
-* [Internal](/doc/stdlib_docs/internal.md)
+* ► [Internal](/doc/stdlib_docs/internal.md)
 * [Allocator](/doc/stdlib_docs/allocator.md)
 * [Memory](/doc/stdlib_docs/memory.md)
 * [Int](/doc/stdlib_docs/int.md)
