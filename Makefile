@@ -1,3 +1,14 @@
+COMPILER 	= gcc
+LIB			= libclibp.a # Library Filename
+OBJ			= clibp.o # Object Filename
+HEADER_PATH = /usr/local/include # Header Files
+LIB_PATH	= /usr/lib # External Library
+CLIBP_PATH  = /bin/gclibp # clib+ Executable
+BUILD_DIR	= build/
+FLAGS 		= -c -nostdlib -nostdinc
+FILES 		= src/c/*.c \
+			  src/c/stdlib/*.c \
+			  src/c/libs/*.c \
 ###
 #
 # 		clib+ Installer
@@ -8,12 +19,14 @@
 # Default Installer
 all: setup compile cloader move clean
 
+test:
+	$(COMPILER) $(FLAGS) $(FILES)
 #
 # Delete obj file
 #
 clean:
 	rm -rf *.o
-	rm gcc_clibp
+	rm gclibp
 
 setup:
 	mkdir -p build
@@ -25,10 +38,10 @@ setup:
 # Set executable perms
 #
 move:
-	cp -r headers/* /usr/local/include
-	cp build/libclibp.a /usr/lib
-	cp gcc_clibp /bin/gclibp
-	chmod +x /bin/gclibp
+	cp -r headers/* $(HEADER_PATH)
+	cp build/libclibp.a $(LIB_PATH)
+	cp gclibp $(CLIBP_PATH)
+	chmod +x $(CLIBP_PATH)
 
 # Count Source Code Lines
 count:
@@ -52,14 +65,11 @@ compile_asm:
 # Merge clib+ built-in lib for the compiler and another for external use with other compilers
 #
 compile:
-	gcc -c src/c/*.c \
-	src/c/stdlib/*.c \
-	src/c/libs/*.c \
-	-nostdlib -nostdinc
-	rm -rf build/libclibp.a
-	rm -rf build/clibp.o
-	ar rcs build/libclibp.a *.o
-	ar rcs build/clibp.o *.o
+	$(COMPILER) $(FLAGS) $(FILES)
+	rm -rf $(BUILD)/$(LIB)
+	rm -rf $(BUILD)/$(OBJ)
+	ar rcs $(BUILD)/$(LIB) *.o
+	ar rcs $(BUILD)/$(OBJ) *.o
 	rm -rf *.o
 
 #
@@ -67,10 +77,10 @@ compile:
 # clean-up
 #
 cloader:
-	gcc -c linker/gcc_clibp.c -o gcc_clibp.o -nostdlib
+	gcc -c linker/gcc_clibp.c -o gclibp.o -nostdlib
 	gcc -c linker/loader.c -o build/loader.o -nostdlib -ffunction-sections -Wl,--gc-sections
-	ld -o gcc_clibp gcc_clibp.o build/clibp.o
-	rm gcc_clibp.o
+	ld -o gclibp gclibp.o build/clibp.o
+	rm gclibp.o
 
 #
 # Test all test files in 'tests/'
