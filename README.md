@@ -4,6 +4,7 @@
 
 ● [Start-up](/README.md)
 | [Introduction](doc/intro.md)
+| [Quick Doc](/quick_doc.md)
 | [Libraries](doc/libraries.md)
 | [Todo](/doc/todo.md)
 </div>
