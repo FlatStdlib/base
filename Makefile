@@ -6,34 +6,23 @@
 .PHONY: all
 
 # Default Installer
-all: dir compile cloader move clean
-
-delete_obj_files:
-	rm -rf loader/loader.o
-	rm -rf build/*.o
+all: setup compile cloader move clean
 
 #
 # Delete obj file
 #
 clean:
 	rm -rf *.o
+	rm gcc_clibp
 
-#
-# Delete build dir
-#
-reset:
-	rm -rf build
-	rm -rf loader/*.o
-
-#
-# Create build dir
-#
-dir:
+setup:
 	mkdir -p build
 
 #
-# Set header files for clib+
-# Set clib+ obj file to system-wide lib dir
+# Set header files in /usr/local/include/
+# Set library binary in /usr/lib
+# Set compiler-linker in /bin/
+# Set executable perms
 #
 move:
 	cp -r headers/* /usr/local/include
@@ -41,24 +30,27 @@ move:
 	cp gcc_clibp /bin/gclibp
 	chmod +x /bin/gclibp
 
+# Count Source Code Lines
 count:
 	wc -l \
 	tests/*.c \
 	src/c/*.c \
+	src/c/libs/*.c \
 	src/c/stdlib/*.c \
 	headers/*.h \
 	src/asm/*.asm
+
 #
 # Compile ASM libs
 #
 compile_asm:
 	nasm -f elf32 src/asm/x86.asm -o build/x86.o
 	nasm -f elf64 src/asm/x86_64.asm -o build/x86_64.o
+
 #
-# Compile the current arch core ASM lib for clib+ built-in
+# Compile clib+
 # Merge clib+ built-in lib for the compiler and another for external use with other compilers
 #
-
 compile:
 	gcc -c src/c/*.c \
 	src/c/stdlib/*.c \
@@ -71,38 +63,20 @@ compile:
 	rm -rf *.o
 
 #
-# Compile clib+ compiler-linker into a object file
-# Compile the loader into a object file
-# Compile the clib+ compiler-linker with the built-in lib obj file
+# Compile linker and loader for clib+
 # clean-up
 #
 cloader:
 	gcc -c linker/gcc_clibp.c -o gcc_clibp.o -nostdlib
-	gcc -c loader/loader.c -o build/loader.o -nostdlib -ffunction-sections -Wl,--gc-sections
+	gcc -c linker/loader.c -o build/loader.o -nostdlib -ffunction-sections -Wl,--gc-sections
 	ld -o gcc_clibp gcc_clibp.o build/clibp.o
 	rm gcc_clibp.o
 
+#
+# Test all test files in 'tests/'
+#
 test_run:
 	gclibp tests/heap.c -o heap && ./heap
 	gclibp tests/file.c -o file && ./file
 	gclibp tests/thread.c -o thread && ./thread
 #	gclibp tests/tcp_socket.c -o tcp && ./tcp
-
-riscv-gcc:
-	mkdir -p build
-
-	clang --target=riscv64-unknown-elf \
-	-c src/*.c \
-	src/stdlib/*.c \
-	src/libs/*.c \
-	-nostdlib -nostdinc
-
-	ar rcs build/riscv_libclibp.a *.o
-	ar rcs build/riscv_clibp.o *.o
-	rm -rf *.o
-
-	clang --target=riscv64-unknown-elf -c linker/gcc_clibp.c -o riscv_gcc_clibp.o -nostdlib
-
-	riscv64-unknown-elf-ld -o riscv_gcc_clibp riscv_gcc_clibp.o build/*.o
-
-	rm -rf *.o
