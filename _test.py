@@ -78,7 +78,11 @@ i8
 </table>
 
 """
-markdown = f"{md_header}\n* A Documentation for developers who know what they're doing!\n\n* This documentation MD was generated using ``_test.py``\n\n"
+markdown = f"{md_header}\n"
+if "--quick" in sys.argv:
+    markdown += "* A Documentation for developers who know what they're doing!\n\n"
+
+markdown += "* This documentation MD was generated using ``_test.py``\n\n"
 for lib in libs:
     markdown += f"# {lib}\n```c\n{libs[lib]}```\n"
 
