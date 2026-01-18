@@ -88,7 +88,7 @@ int entry(int argc, string argv[]) {
 	if((idx = array_contains_str((array)argv, "--output")) > -1) {
 		string output_file = argv[idx + 1];
 
-		sArr gcc_cmd = allocate(sizeof(char *), argc + 1);
+		sArr gcc_cmd = allocate(sizeof(char *), argc + 3);
 		int pos = create_gcc_command(gcc_cmd);
 
 		/* Add the remaining files or command */
@@ -101,11 +101,11 @@ int entry(int argc, string argv[]) {
 		/*
 			Debug GCC Command
 		*/
-		// print("Command: ");
-		// for(int n = 0; n < pos; n++)
-		// 	print("'"), print(gcc_cmd[n]), println("'");
+		print("Command: ");
+		for(int n = 0; n < pos; n++)
+			print("'"), print(gcc_cmd[n]), println("'");
 		
-		// print("\n");
+		print("\n");
 
 		println("[ + ] Compiling to object file(s)....");
 		__execute(gcc_cmd[0], gcc_cmd);

@@ -1,0 +1,23 @@
+#pragma once
+
+#include <clibp.h>
+
+#ifndef _LIBWEB_ROUTER_H
+    #define _LIBWEB_ROUTER_H
+    typedef struct
+    {
+        string      name;
+        string      path;
+
+        string      template;
+        handler_t   handle;
+        /*
+            For Non View-Only sites, These must be enabled 
+        */
+        bool        parse_req;
+    } _route;
+
+    typedef _route *route_t;
+    typedef _route 	**rArr;
+    
+#endif

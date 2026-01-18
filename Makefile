@@ -26,7 +26,6 @@ CLIBP_PATH  = /bin/gclibp
 FLAGS 		= -c -nostdlib -nostdinc
 FILES 		= src/c/*.c \
 			  src/c/stdlib/*.c \
-			  src/c/libs/*.c \
 
 .PHONY: all
 
@@ -41,7 +40,6 @@ count:
 	wc -l \
 	tests/*.c \
 	src/c/*.c \
-	src/c/libs/*.c \
 	src/c/stdlib/*.c \
 	headers/*.h \
 	src/asm/*.asm
@@ -70,9 +68,11 @@ compile:
 #
 cloader:
 	gcc -c linker/loader.c -o $(BUILD)/loader.o -nostdlib -ffunction-sections -Wl,--gc-sections
-	gcc -c linker/gcc_clibp.c -o gclibp.o -nostdlib 
+	gcc -c linker/gcc_clibp.c -o gclibp.o -nostdlib -ffunction-sections -Wl,--gc-sections -fdata-sections
 # 	cp $(BUILD)/clibp.o cpy.o
-	ld -o gclibp gclibp.o $(BUILD)/$(LIB) $(BUILD)/loader.o
+	ld --gc-sections -o gclibp gclibp.o $(BUILD)/$(LIB) $(BUILD)/loader.o
+
+#"-ffunction-sections", "-fdata-sections", "-Wl,--gc-sections",
 
 #
 # Set header files in /usr/local/include/
