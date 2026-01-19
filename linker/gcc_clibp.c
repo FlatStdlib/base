@@ -6,7 +6,7 @@ const string HELP_BANNER = "    Argument      Description\n"
     					   "-c            object file\n"
     					   "-co           Combine object file(s)";
 
-// -ffunction-sections -fdata-sections -Wl,--gc-sections
+
 #define GCC_FLAGS 8
 string GCC_COMPILE_FLAGS[GCC_FLAGS] = {
 	"/usr/bin/gcc",
@@ -54,7 +54,7 @@ void __execute(char *app, char **args)
 {
 	if(!app || !args)
 		return;
-    
+
 	long pid = __syscall__(0, 0, 0, -1, -1, -1, _SYS_FORK);
 
 	if(pid == 0)
@@ -132,17 +132,20 @@ int entry(int argc, string argv[]) {
 		ld_cmd[ld_pos++] = str_dup(CLIBP_LIB);
 		ld_cmd[ld_pos++] = str_dup(CLIBP_LOADER);
 		ld_cmd[ld_pos] = NULL;
-			
+
 		/*
 			Debug Linker Command
 		*/
 		// print("LINKER: ");
 		// for(int n = 0; n < ld_pos; n++)
 		// 	print(ld_cmd[n]), print(" ");
-		
+
 		// print("\n");
 
 		/* Create binary with object files */
+		if(array_contains_str((array)argv, "-c") > -1)
+			return 0;
+
 		__sprintf(BUFFER, "[ + ] Linking with /usr/lib/libclibp.a and Producing '%s'....", output_file);
 		println(BUFFER);
 		__execute(ld_cmd[0], ld_cmd);
@@ -196,9 +199,8 @@ int entry(int argc, string argv[]) {
 	};
     __execute(GCC_CMD[0], GCC_CMD);
 
-	if(array_contains_str((array)argv, "-c") > -1) {
+	if(array_contains_str((array)argv, "-c") > -1)
 		return 0;
-	}
 
 	char *LINKER_CMD[9] = {
         "/usr/bin/ld",

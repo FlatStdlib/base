@@ -34,7 +34,10 @@ extern int __CLIBP_DEBUG__;
 	Disable by using DISABLE_AUTO_ARCH_DET
 	followed by a specific architecture for compilation
 */
-#include "asm.h"
+#ifndef __NO_ASM__
+	#define __NO_ASM__
+	#include "asm.h"
+#endif
 
 /*
 	Built-in Types

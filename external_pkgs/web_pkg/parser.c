@@ -45,7 +45,7 @@ handler_t request_handler(cwr_t wr)
 	return NULL;
 }
 
-void parse_request(cwr_t wr)
+fn parse_request(cwr_t wr)
 {
 	bool capture_body = false;
 
@@ -91,4 +91,73 @@ void parse_request(cwr_t wr)
 			pfree_array((array)args);
 		}
 	}
+}
+
+fn parse_post(cwr_t wr)
+{
+	if(!wr)
+		return;
+
+	if(find_char(wr->body, '=') == -1)
+		return;
+
+	wr->post = init_map();
+	if(find_char(wr->body, '&') > -1)
+	{
+		int arg_c = 0;
+		sArr args = split_string(wr->body, '&', arg_&c);
+		if(!arg_c)
+			return;
+
+		for(int i = 0; i < arg_c; i++)
+		{
+			int argc = 0;
+			sArr arg = split_string(args[i], '=', &argc);
+			if(!arg || !argc)
+				continue;
+
+			map_append(wr->post, arg[0], arg[1]);
+		}
+
+		pfree_array(args);
+	}
+
+	int argc = 0;
+	sArr args = split_string(wr->body, '=', &argc);
+	if(!args || !argc)
+		return;
+
+	map_append(wr->post, args[0], args[1]);
+	pfree_array(args);
+}
+
+fn parse_get_parameters(cwr_t wr)
+{
+	if(!wr)
+		return;
+
+	int pos = find_char(wr->uri, '?');
+	if(pos == -1)
+		return;
+
+	wr->get = init_map();
+	string parameters = wr->body + pos;
+	if(find_char(parameters, '&')) {
+		int argc = 0;
+		sArr params = split_string(parameters, '&', &argc);
+		if(!argc || !params)
+			return;
+
+		for(int i = 0; i < argc; i++)
+		{
+			int arg_c = 0;
+			sArr field = split_string(params[i], '=', &arg_c);
+			if(!arg_c || !field)
+				continue;
+
+			map_append(wr->get, field[0], field[1]);
+			pfree_array(field);
+		}
+	}
+
 }

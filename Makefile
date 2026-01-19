@@ -32,6 +32,9 @@ FILES 		= src/c/*.c \
 # Default Installer
 all: setup compile cloader move clean compile_asm # test_run
 
+edit:
+	nano -m *.md Makefile *.py **/*.h **/*.c src/asm/*.asm src/c/*.c src/c/stdlib/*.c
+
 setup:
 	mkdir -p $(BUILD)
 
@@ -81,7 +84,7 @@ cloader:
 # Set executable perms
 #
 move:
-	cp -r headers/*.h $(HEADER_PATH)
+	cp -r headers/* $(HEADER_PATH)
 	cp $(BUILD)/$(LIB) $(LIB_PATH)
 	cp $(BUILD)/loader.o $(LIB_PATH)
 	cp gclibp $(CLIBP_PATH)

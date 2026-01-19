@@ -13,10 +13,12 @@ typedef struct
 	request_t		type;
 	status_code		status;
 	string			path;
+	string			uri;
 	string			http_version;
 
 	map_t			headers;
 	map_t			post;
+	map_t			get;
 
 	string 			content;
 	string			body;
