@@ -13,6 +13,7 @@
 
 <p>Todo<p>
 
+* asm() implementation ( not __asm__() )
 * Implement ASM Syscalls and CPU Arch Info in ``src/asm/*.asm`` for ARM v5/v7, Aarch64, and WIN64
 * Implement format types for ``_sprintf`` in ``src/stdlib/src.c``
 * Improve ``headers/clibp_gcc.h`` to work with clib+ and C - stdlib
