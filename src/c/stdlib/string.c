@@ -56,7 +56,9 @@ string int_to_str(int num)
     }
 
 	i++;
-	buff[i] = '\0';
+	if(i != 150)
+		buff[i + 1] = '\0';
+		
 	return str_dup(buff);
 }
 
