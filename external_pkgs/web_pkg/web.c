@@ -1,7 +1,6 @@
 #include "headers/libweb.h"
 
 handler_t test_page(route_t r, cwr_t wr) {
-	// println(r->template);
 	send_response(wr, (_response){ OK, 0, 0, r->template}, 1);
 }
 
@@ -10,10 +9,6 @@ handler_t index_page(route_t r, cwr_t wr) {
 }
 
 int entry() {
-	toggle_debug_mode();
-	uninit_mem();
-	set_heap_sz(_HEAP_PAGE_ * 5);
-	init_mem();
 	cws_t ws = init_web_server(NULL, 80);
 	if(!ws)
 	{
@@ -44,9 +39,9 @@ int entry() {
 	return 0;
 }
 
-int main() { 
-	set_heap_sz(4096 * 5);
-	init_mem();
-	return entry();
-	uninit_mem();
-}
+// int main() { 
+// 	set_heap_sz(4096 * 5);
+// 	init_mem();
+// 	return entry();
+// 	uninit_mem();
+// }

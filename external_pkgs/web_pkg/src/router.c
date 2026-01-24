@@ -27,7 +27,6 @@ bool get_html_template(route_t r, string template_file)
         clibp_panic("unable to read html file..!");
 
     i32 sz = file_content_size(file);
-    _printf("-> File Sz: %d\n", (void *)&sz);
     if(sz <= 0)
         clibp_panic("cannot read file");
 
@@ -35,6 +34,8 @@ bool get_html_template(route_t r, string template_file)
     if(!r->template)
         clibp_panic("segfault");
     i32 bytes = file_read(file, r->template, sz);
+    if(bytes <= 0)
+        clibp_panic("[ WEB_SERVER ]: unable to read html file data....!");
 
     r->template[sz] = '\0';
     file_close(file);
