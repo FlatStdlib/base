@@ -9,7 +9,7 @@ handler_t index_page(router_t r, cwr_t wr) {
 }
 
 int entry() {
-	cws_t ws = init_web_server(NULL, 50);
+	cws_t ws = init_web_server(NULL, 80);
 	if(!ws)
 	{
 		println("error, unable to put up the webserver!");
