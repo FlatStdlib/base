@@ -114,6 +114,7 @@ int 	get_args(char* argv[]);
 
 /*
     [@DOC]
+        @alias: forever(count, arr, callback, counter, ...)
         @parameters:
             # count     | Max count of elements in array
             # arr       | array to iterate
@@ -132,6 +133,7 @@ int 	get_args(char* argv[]);
 
 /*
 	[@DOC]
+		@alias: forever_ptr(count, arr, callback, counter, ...)
 		@parameters:
 			# count         | Max count of elements in array
 			# arr           | array to iterate
@@ -452,7 +454,6 @@ int 	get_args(char* argv[]);
 	public i32 		find_char(const string buffer, const char ch);
 	public i32 		find_char_at(const string buffer, const char ch, int match);
 	public i32 		_find_char_at(const string buffer, const char ch, int match, int *start);
-	public bool		trim_char_idx(string buff, int pos);
 	public int 		replace_char(string buffer, const char find, const char replace);
 #endif
 

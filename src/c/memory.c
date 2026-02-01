@@ -1,15 +1,15 @@
 #include "../../headers/libbase.h"
 
-public fn memzero(any ptr, size_t size)
+public fn memzero(any p, size_t size)
 {
-	mem_set(ptr, 0, size);
+	mem_set(p, 0, size);
 }
 
-public int mem_cmp(any src, any ptr, size_t size)
+public int mem_cmp(any src, any p, size_t size)
 {
 	for(int i = 0; i < size; i++)
 	{
-		if(((char *)src)[i] != ((char *)ptr)[i])
+		if(((char *)src)[i] != ((char *)p)[i])
 			return 0;
 	}
 
@@ -24,10 +24,10 @@ public fn mem_cpy(any dest, any src, size_t size)
 	}
 }
 
-public fn mem_set(any ptr, char ch, size_t size)
+public fn mem_set(any p, char ch, size_t size)
 {
 	for(int i = 0; i < size; i++)
 	{
-		((char *)ptr)[i] = ch;
+		((char *)p)[i] = ch;
 	}
 }
