@@ -428,3 +428,46 @@ public bool str_strip(string buffer)
     buffer[idx] = '\0';
     return true;
 }
+
+string float_to_str(double n, char *out, int precision)
+{
+    int i = 0;
+
+    if (n < 0) {
+        out[i++] = '-';
+        n = -n;
+    }
+
+    long long ip = (long long)n;
+    double fp = n - (double)ip;
+
+    char tmp[32];
+    int j = 0;
+
+    if (ip == 0)
+        tmp[j++] = '0';
+
+    while (ip > 0)
+    {
+        tmp[j++] = (ip % 10) + '0';
+        ip /= 10;
+    }
+
+    while (j--)
+        out[i++] = tmp[j];
+
+    if (precision > 0)
+    {
+        out[i++] = '.';
+
+        while (precision--)
+        {
+            fp *= 10.0;
+            int digit = (int)fp;
+            out[i++] = digit + '0';
+            fp -= digit;
+        }
+    }
+
+    out[i] = '\0';
+}

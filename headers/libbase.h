@@ -483,6 +483,7 @@ int 	get_args(char* argv[]);
 	public bool 	str_endswith(string buffer, string needle);
 	public fn 		byte_to_hex(u8 byte, string out);
 	public bool 	str_strip(string buffer);
+	public string 	float_to_str(double n, char *out, int precision);
 #endif
 
 #ifdef _LB_ARR_H
