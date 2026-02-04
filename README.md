@@ -59,7 +59,7 @@ Want to help out with the FSL? You can start by downloading this stdlib and the 
 # Community 
 
 <p>We have a discord server for the public FSL community</p>
-<p>Join here for any questions or help with anything FSL <a href="https://discord.gg/3w85CEhN6w">Click</a></p>
+<p>Join here for any questions or help with anything FSL <a href="https://discord.gg/3w85CEhN6w">Click Here to Join</a></p>
 
 ### File Structure Information
 ```
