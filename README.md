@@ -46,7 +46,7 @@ int entry() {
 }
 ```
 
-# Compile w/ CLIBP
+# Compile w/ FSL
 
 ### Linux Linker
 ```c
